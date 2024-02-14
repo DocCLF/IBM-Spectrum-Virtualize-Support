@@ -1,0 +1,2596 @@
+{
+    //Array commands
+    "ibm_array_mk_DRAID":{
+        "prefix":["ibm_array, draid, raid"],
+        "body":[
+            "mkdistributedarray -level ${1|raid6,raid1|} -driveclass ${2:driveclass_id} -drivecount ${3:2=><=128} -encrypt ${4|no,yes|} ${5:mdiskgrp_name}"
+        ],
+        "description": " Create a distributed array.\n There is some more parameters, but these are optional\n Driveclass_id must be a numeric value specified with the \"lsdriveclass\" command.\n If there is only one drive class, the id is 0"
+    }
+    "ibm_array_expandarray":{
+        "prefix":["ibm_array, expandarray"],
+        "body":[
+            "expandarray -totaldrivecount ${1:resulting_drive_count} ${2|mdisk_id,mdisk_name|}"
+        ],
+        "description": " Add new drive capacity to an existing distributed array MDisk\n There are some more parameters, but these are optional."
+    }
+    "ibm_array_rm_array":{
+        "prefix":["ibm_array, rmarray"],
+        "body":[
+            "rmarray -mdisk ${1|mdisk_id,mdisk_name|} -force ${2|mdiskgrp_id,mdiskgrp_name|}"
+        ],
+        "description": " Remove an array MDisk from the configuration\n Example: rmarray -mdisk 6 -force mdiskgrp_10\n -mdisk 6 = Identifies the array MDisk\n mdiskgrp_10 = Identifies the pool by name or ID to remove the created array MDisk from."
+    }
+    "ibm_array_ls_array":{
+        "prefix":["ibm_array, lsarray"],
+        "body":[
+            "lsarray"
+        ],
+        "description": " List the array MDisks\n Example: lsarray 0\n ID 0 is requested here\n lasarry -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;\n There are some more parameters, but these are optional."
+    }
+    //Audit log commands
+    "ibm_event_auditlog":{
+        "prefix":["ibm_log, catauditlog"],
+        "body":[
+            "catauditlog"
+        ],
+        "description": " Display the in-memory contents of the audit log\n Example: catauditlog -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;"
+    }
+    //Backup and Restore commands
+    "ibm_svcconfig_backup":{
+        "prefix":["ibm_svcconfig, backup"],
+        "body":[
+            "svcconfig backup"
+        ],
+        "description": "Saves the current system configuration in the /tmp directory"
+    }
+    "ibm_svcconfig_clear":{
+        "prefix":["ibm_svcconfig, clear"],
+        "body":[
+            "svcconfig clear -all"
+        ],
+        "description": "Erase files in the /tmp directory that were previously produced by other svcconfig commands."
+    }
+    "ibm_svcconfig_restore":{
+        "prefix":["ibm_svcconfig, restore"],
+        "body":[
+            "svcconfig restore"
+        ],
+        "description": "Restore the system to its previous configuration. This command uses the configuration files in the /tmp folder"
+    }
+    //Clustered system command
+    "ibm_cluster_mgmt_add_node":{
+        "prefix":["ibm_cluster_mgmt, addnode"],
+        "body":[
+            "svctask addnode -panelname ${1:Node_SN} -name ${2:name_the_svc} -iogrp ${3:iogrp_id}"
+        ],
+        "description": " Add a new (candidate) node to an existing system.\n Example:\n svctask addnode -panelname 78E31X2 -name name_the_svc -iogrp 0"
+    }
+    "ibm_cluster_mgmt_ch_iogrp_name":{
+        "prefix":["ibm_cluster_mgmt, chiogrp_name"],
+        "body":[
+            "chiogrp -name ${1:new_iogrp_name} ${2:iogrp_id}"
+        ],
+        "description": " Specifies the name to assign to the I/O group.\n Example: chiogrp -name testiogrpone io_grp0"
+    }
+    "ibm_cluster_mgmt_ch_iogrp_fctargetportmode":{
+        "prefix":["ibm_cluster_mgmt, chiogrp, chportmode"],
+        "body":[
+            "chiogrp -fctargetportmode ${1|disabled,transitional,enabled|} ${2:iogrp_id}"
+        ],
+        "description": " Specifies the name to assign to the I/O group.\n Example: chiogrp -fctargetportmode enabled 0\n The \"transitional\" state is an intermediate state where both the virtual ports and physical ports are enabled"
+    }
+    "ibm_cluster_mgmt_ch_nodecanister_name":{
+        "prefix":["ibm_cluster_mgmt, chnodecanister_name"],
+        "body":[
+            "chnodecanister -name ${1:new_canister_name} ${2:node_id}"
+        ],
+        "description": " Specifies the (new-)name to assign to the node canister\n Example: chnodecanister -name testnodeone 0"
+    }
+    "ibm_cluster_mgmt_ch_quorum":{
+        "prefix":["ibm_cluster_mgmt, quorum, chquorum"],
+        "body":[
+            "chquorum -mdisk ${1:mdisk_id} ${2:quorum_id}"
+        ],
+        "description": " Change the quorum association\n Example: chquorum -mdisk 45 2\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_quorum":{
+        "prefix":["ibm_cluster_mgmt, lsquorum"],
+        "body":[
+            "lsquorum"
+        ],
+        "description": " List the quorum devices that the system uses to store quorum data.\n Example: lsquorum (id_is_optional)"
+    }
+    "ibm_cluster_mgmt_ch_site":{
+        "prefix":["ibm_cluster_mgmt, chsite_name"],
+        "body":[
+            "chsite -name ${1:new_site_name} ${2:site_id_or_sitename}"
+        ],
+        "description": " change the site name\n Example: chsite -name Newname 3"
+    }
+    "ibm_cluster_mgmt_remotesupport":{
+        "prefix":["ibm_cluster_mgmt, remotesupport"],
+        "body":[
+            "chsra -remotesupport ${1|disabled,enabled,test|}"
+        ],
+        "description": " Configure remotesupport assistance"
+    }
+    "ibm_cluster_mgmt_ch_system_unmap":{
+        "prefix":["ibm_cluster_mgmt, hostunmap, backendunmap, chsystem"],
+        "body":[
+            "chsystem -hostunmap ${1|on,off|} -backendunmap ${2|on,off|}"
+        ],
+        "description": "Turn hostunmap and backendunmap on or off"
+    }
+    "ibm_cluster_mgmt_ch_system_layer":{
+        "prefix":["ibm_cluster_mgmt, chsystem_layer"],
+        "body":[
+            "chsystem -layer ${1|replication,storage|}"
+        ],
+        "description": "Specify the layer replication or storage. This option can be used if no other systems are visible on the fabric, and no system partnerships are defined."
+    }
+    "ibm_cluster_mgmt_ch_system_ntpipaddress":{
+        "prefix":["ibm_cluster_mgmt, chsystem_ntpip"],
+        "body":[
+            "chsystem -ntpip ${1:ntp_ip_address}"
+        ],
+        "description": " Configuring an NTP server address causes the system to use that NTP server as its time source.\n Example: chsystem -ntpip 0.0.0.0\n Specify the -ntpip parameter with a zero address to use another time source."
+    }
+    "ibm_cluster_mgmt_ch_system_fcportmask":{
+        "prefix":["ibm_cluster_mgmt, chsystem_fcportmask"],
+        "body":[
+            "chsystem -${1|localfcportmask,partnerfcportmask|} ${2:fcportmask}"
+        ],
+        "description": " Change the partner or local port mask\n Example: chsystem -localfcportmask 00001100"
+    }
+    "ibm_cluster_mgmt_ch_system_ip":{
+        "prefix":["ibm_cluster_mgmt, chsystemip, clusterip"],
+        "body":[
+            "chsystemip -clusterip ${1:clusterip} -gw ${2:gwip} -mask ${3:maskip} -port ${4:1-2}"
+        ],
+        "description": " Modify the IP configuration parameters for the system.\n Example: chsystemip -clusterip 9.20.136.5 -gw 9.20.136.1 -mask 255.255.255.0 -port 1"
+    }
+    "ibm_cluster_mgmt_list_fabric":{
+        "prefix":["ibm_cluster_mgmt, lsfabric"],
+        "body":[
+            "lsfabric -delim ${1:delimiter}"
+        ],
+        "description": " Displays the FC connectivity between nodes, controllers, and hosts.\n Example: lsfabric -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_fcportcandidate":{
+        "prefix":["ibm_cluster_mgmt, lsfcportcandidate"],
+        "body":[
+            "lsfcportcandidate -delim ${1:delimiter}"
+        ],
+        "description": " Presents a list of host FC ports that are logged in to nodes.\n Example: lsfcportcandidate -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_iogrp_overview":{
+        "prefix":["ibm_cluster_mgmt, lsiogrp"],
+        "body":[
+            "lsiogrp -delim ${1:delimiter}"
+        ],
+        "description": " Display a List I/O-groups visible to the system\n Example: lsiogrp -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_iogrp_overview":{
+        "prefix":["ibm_cluster_mgmt, lsiogrp_id"],
+        "body":[
+            "lsiogrp ${1:id}"
+        ],
+        "description": " Detailed view one I/O-group visible to the system, specified by ID or Name.\n Example: lsiogrp 0\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_iogrphost":{
+        "prefix":["ibm_cluster_mgmt, lsiogrphost"],
+        "body":[
+            "lsiogrphost ${1:id}"
+        ],
+        "description": " Display a list of the hosts mapped to a specified I/O group\n Example: lsiogrphost 0\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_iogrpcandidate":{
+        "prefix":["ibm_cluster_mgmt, lsiogrpcandidate"],
+        "body":[
+            "lsiogrpcandidate -delim ${1:delimiter}"
+        ],
+        "description": " List the I/O groups that can have nodes added to them\n Example: lsiogrpcandidate -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_nodes":{
+        "prefix":["ibm_cluster_mgmt, lsnode"],
+        "body":[
+            "lsnode"
+        ],
+        "description": " List or a detailed view of nodes that are part of the system\n Example: lsnode ID\n Example: lsnode -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_nodecanister":{
+        "prefix":["ibm_cluster_mgmt, lsnodecanister"],
+        "body":[
+            "lsnodecanister"
+        ],
+        "description": " List or a detailed view of nodes that are part of the system\n Example: lsnodecanister ID\n Example: lsnodecanister -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_mgmt_list_nodecanisterhw":{
+        "prefix":["ibm_cluster_mgmt, lsnodecanisterhw"],
+        "body":[
+            "lsnodecanisterhw ${1:id_or_name}"
+        ],
+        "description": " Display the configured and actual hardware configuration of node canisters in the clustered system\n Example: lsnodecanister -delim ; (ID_or_name)\n Data is separated from its header by the specified delimiter, in this case with ;"
+    }
+    "ibm_cluster_mgmt_list_portfc":{
+        "prefix":["ibm_cluster_mgmt, lsportfc"],
+        "body":[
+            "lsportfc"
+        ],
+        "description": " View the status and properties of the FC I/O ports for the clustered system.\n Example: lsportfc 0\n Example: lsportfc -delim ; (ID)\n Data is separated from its header by the specified delimiter, in this case with ;"
+    }
+    "ibm_cluster_mgmt_list_portstats":{
+        "prefix":["ibm_cluster_mgmt, lsportstats"],
+        "body":[
+            "lsportstats -node ${1:node_id_or_name}"
+        ],
+        "description": " View the port transfer and failure counts and SFP diagnostics data\n Example: lsportstats -node 0 (Port_id_optional)"
+    }
+    "ibm_cluster_mgmt_list_security":{
+        "prefix":["ibm_cluster_mgmt, lssecurity"],
+        "body":[
+            "lssecurity"
+        ],
+        "description": " Display the current system security settings\n Example: lssecurity -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;"
+    } 
+    "ibm_cluster_mgmt_list_site":{
+        "prefix":["ibm_cluster_mgmt, lssite"],
+        "body":[
+            "lssite"
+        ],
+        "description": " Report the names of the sites\n Example: lssite -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;"
+    }
+    "ibm_cluster_mgmt_list_system":{
+        "prefix":["ibm_cluster_mgmt, lssystem"],
+        "body":[
+            "lssystem"
+        ],
+        "description": " Display a detailed view of a system\n Example: lssystem -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;"
+    }
+    "ibm_cluster_mgmt_list_targetportfc":{
+        "prefix":["ibm_cluster_mgmt, lstargetportfc"],
+        "body":[
+            "lstargetportfc"
+        ],
+        "description": " List of host count and login count for each WWPNs required to set up FC zoning and to display the current failover status of host IO ports\n Example: lstargetportfc -delim ;\n Data is separated from its header by the specified delimiter, in this case with ;"
+    }
+    "ibm_cluster_mgmt_list_nodestatus":{
+        "prefix":["ibm_cluster_mgmt, nodestatus"],
+        "body":[
+            "svcinfo lsnodestatus ${1:node_id_or_name}"
+        ],
+        "description": " View the status of a node\n Example: svcinfo lsnodestatus 1"
+    }
+    "ibm_cluster_mgmt_rm_node":{
+        "prefix":["ibm_cluster_mgmt, rmnode"],
+        "body":[
+            "svctask rmnode ${1:node_id_or_name}"
+        ],
+        "description": " Deletes a node (or spare node) from the clustered system\n Example: rmnode 1\n Attention: Removing the configuration node as last if possible!"
+    }
+    "ibm_cluster_mgmt_rm_nodecanister":{
+        "prefix":["ibm_cluster_mgmt, rmnodecanister"],
+        "body":[
+            "svctask rmnodecanister ${1:node_id_or_name}"
+        ],
+        "description": " Deletes a node (or spare node) from the clustered system\n Example: rmnodecanister 1"
+    }
+    "ibm_cluster_mgmt_ch_techport":{
+        "prefix":["ibm_cluster_mgmt, techport"],
+        "body":[
+            "svctask chnodeserviceip -techport ${1|disable,enable -force|} -node ${2:id_or_nodename}"
+        ],
+        "description": " Specifies whether techport is enabled or disabled\n Example: svctask chnodeserviceip -techport enable -force -node 0"
+    }
+    "ibm_cluster_mgmt_ch_serviceip":{
+        "prefix":["ibm_cluster_mgmt, serviceip"],
+        "body":[
+            "svctask chnodeserviceip -serviceip ${1:serviceip} -gw ${2:gwip} -mask ${3:maskip} -node ${4:id_or_nodename}"
+        ],
+        "description": " Set the service address for a specific node\n Example: svctask chnodeserviceip -serviceip 1.2.3.4 -gw 1.2.3.1 -mask 255.255.255.0 -node 1"
+    }
+    //Clustered system diag and service
+    "ibm_cluster_service_firmware":{
+        "prefix":["ibm_cluster_service, firmware_install"],
+        "body":[
+            "svctask applysoftware -file ${1:code_package_name}"
+        ],
+        "description": " Update the system to a new level of code or install a patch on the system\n Example: svctask applysoftware -file INSTALL_6.4.0.0\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_service_ch_dnsserver":{
+        "prefix":["ibm_cluster_service, chdnsserver"],
+        "body":[
+            "svctask chdnsserver -${1|ip,name|} ${2:dns_server_name_or_ip_addr} ${3:dns_name_or_id}"
+        ],
+        "description": " Change a DNS server IP address or name on a system\n Example: chdnsserver -ip 192.168.48.220 1"
+    }
+    "ibm_cluster_service_mk_dnsserver":{
+        "prefix":["ibm_cluster_service, mkdnsserver"],
+        "body":[
+            "svctask mkdnsserver -ip ${1:ip_address} -name ${2:DNS_name}"
+        ],
+        "description": " Configure a new DNS server for a system\n Example: mkdnsserver -ip 192.168.44.34 New_DNS"
+    }
+    "ibm_cluster_service_ch_syslogserverr":{
+        "prefix":["ibm_cluster_service, chsyslogserver"],
+        "body":[
+            "svctask chsyslogserver -name ${1:server_name} -ip ${2:ip_address_or_domain_name} -error ${3|on,off|} -warning ${4|on,off|} -info ${5|on,off|} -audit ${6|on,off|} -login ${7|on,off|} -protocol ${8|udp -port 514,tcp -port 6514|} ${9:id_or_syslog_server_name}"
+        ],
+        "description": " Modify the parameters of an existing syslog server\n Example: chsyslogserver -name syslog4 -ip 192.168.0.4 -audit off -login off -protocol tcp -port 6514 syslog1"
+    }
+    "ibm_cluster_service_mk_syslogserver":{
+        "prefix":["ibm_cluster_service, mksyslogserver"],
+        "body":[
+            "svctask mksyslogserver -name ${1:server_name} -ip ${2:ip_address_or_domain_name} -error ${3|on,off|} -warning ${4|on,off|} -info ${5|on,off|} -audit ${6|on,off|} -login ${7|on,off|} -protocol ${8|udp -port 514,tcp -port 6514|}"
+        ],
+        "description": " Create a syslog server to receive notifications\n Example: mksyslogserver -name syslog4 -ip 192.168.0.4 -audit off -login off -protocol tcp -port 6514"
+    }
+    "ibm_cluster_service_list_eventlog":{
+        "prefix":["ibm_cluster_service, lseventlog"],
+        "body":[
+            "lseventlog -alert ${1|on,off|} -message ${2|on,off|} -monitoring ${3|on,off|} -expired ${4|on,off|} -fixed ${5|on,off|} -count ${6:max_nbr_of_events}"
+        ],
+        "description": " Display a concise view of the system event log, or a detailed view of one entry from the log.\n There are some more parameters, but these are optional"
+    }
+    "ibm_cluster_service_list_syslog_dns_server":{
+        "prefix":["ibm_cluster_service, lssyslogserver, lsdnsserver"],
+        "body":[
+            "${1|lssyslogserver,lsdnsserver|}"
+        ],
+        "description": " List a detailed view of syslog or dns servers"
+    }
+    "ibm_cluster_service_rm_server":{
+        "prefix":["ibm_cluster_service, rmsyslogserver, rmdnsserver, rmsystemsupportcenter"],
+        "body":[
+            "svctask ${1|rmsyslogserver,rmdnsserver,rmsystemsupportcenter|} ${2:Name_or_ID}"
+        ],
+        "description": " Remove syslog, dns servers, support center or proxy server"
+    }
+    "ibm_cluster_service_find_err":{
+        "prefix":["ibm_cluster_service, finderr"],
+        "body":[
+            "finderr"
+        ],
+        "description": " Analyze the event log for the highest severity unfixed event"
+    }
+    "ibm_cluster_service_list_controller":{
+        "prefix":["ibm_cluster_service, lscontroller"],
+        "body":[
+            "lscontroller"
+        ],
+        "description": " Display a concise list or a detailed view of controllers that are visible to the system\n Example: lscontroller (ID)"
+    }
+    "ibm_cluster_service_list_update":{
+        "prefix":["ibm_cluster_service, lsupdate, update_status"],
+        "body":[
+            "lsupdate"
+        ],
+        "description": " Display a system's machine code (code) upgrade status\n Example: lsupdate -delim ; \n There are some more parameters, but these are optional"
+    }
+    //Copy Service Commands
+    "ibm_copy_service_ch_rc_congrp":{
+        "prefix":["ibm_copy_service, chrcconsistgrp"],
+        "body":[
+            "svctask chrcconsistgrp -name ${1:new_name} -${2|global,metro|} ${3:rc_grp_name_or_id}"
+        ],
+        "description": " Modify attributes of an existing Metro Mirror, Global Mirror, or active-active consistency group, such as changing the name of a consistency group\n Example: chrcconsistgrp -name rctestone rc_testgrp"
+    }
+    "ibm_copy_service_list_partnership":{
+        "prefix":["ibm_copy_service, lspartnership, lspartnershipcandidate"],
+        "body":[
+            "${1|lspartnership,lspartnershipcandidate|}"
+        ],
+        "description": " Display Partnership, Partnershipcanidate or RC-Relationship\n There are some more parameters, but these are optional"
+    }
+    "ibm_copy_service_mk_fcpartnership":{
+        "prefix":["ibm_copy_service, mkfcpartnership"],
+        "body":[
+            "svctask mkfcpartnership -linkbandwidthmbits ${1:link_bandwidth_in_mbps} -backgroundcopyrate ${2:percentage} ${3:remote_system_id_or_name}"
+        ],
+        "description": " Define partnerships using FC or FCoE.\n Example: mkfcpartnership -linkbandwidthmbits 16000 -backgroundcopyrate 50 0"
+    }
+    "ibm_copy_service_rm_partnership":{
+        "prefix":["ibm_copy_service, rmpartnership"],
+        "body":[
+            "svctask rmpartnership ${1:remote_system_id_or_name}"
+        ],
+        "description": " remove a partnership to a remote system\n Example: rmpartnership Cluster1"
+    }
+    "ibm_copy_service_mk_rcrelationship":{
+        "prefix":["ibm_copy_service, mkrcrelationship"],
+        "body":[
+            "svctask mkrcrelationship -master ${1:master_vdisk_name_or_id} -aux ${2:aux_vdisk_name_or_id} -cluster ${3:cluster_id_or_name}"
+        ],
+        "description": " Create a new Global Mirror or Metro Mirror relationship\n Example: mkrcrelationship -master vdiskA -aux vdiskB -cluster clusterB -name new_rel -global -cyclingmode multi \n There are some more parameters, but these are optional"
+    }
+    "ibm_copy_service_rm_rcconsistgrp":{
+        "prefix":["ibm_copy_service, rmrcconsistgrp"],
+        "body":[
+            "svctask rmrcconsistgrp ${1:remote_system_id_or_name}"
+        ],
+        "description": " Remove a partnership to a remote system\n Example: rmpartnership Cluster1"
+    }
+    "ibm_copy_service_rm_rcrelationship":{
+        "prefix":["ibm_copy_service, rmrcrelationship"],
+        "body":[
+            "svctask rmrcrelationship ${1:rc_rel_name_or_id}"
+        ],
+        "description": " Delete an existing remote copy relationship\n Example: rmrcrelationship rccopy1"
+    }
+    "ibm_copy_service_start_rc_grp_ship":{
+        "prefix":["ibm_copy_service, startrcconsistgrp, startrcrelationship"],
+        "body":[
+            "svctask ${1|startrcconsistgrp,startrcrelationship|} ${2:rc_name_or_id}"
+        ],
+        "description": " Start a remote copy group or relationship if the primary volume is a target volume of a prepared FC mapping\n Example: startrcconsistgrp -primary master rccopy1"
+    }
+    "ibm_copy_service_stop_rc_grp_ship":{
+        "prefix":["ibm_copy_service, stoprcconsistgrp, stoprcrelationship"],
+        "body":[
+            "svctask ${1|stoprcconsistgrp,stoprcrelationship|} -access ${2:rc_name_or_id}"
+        ],
+        "description": " Stop the copy process for a Metro Mirror, Global Mirror or migration stand-alone relationship\n Example: stoprcconsistgrp -access rccopy1\n -access (Optional) Specifies that the system allow write access to a consistent secondary volume."
+    }
+    "ibm_copy_service_start_rc_grp_ship":{
+        "prefix":["ibm_copy_service, switchrcconsistgrp, switchrcrelationship"],
+        "body":[
+            "svctask ${1|switchrcconsistgrp,switchrcrelationship|} -primary ${2|master,aux|} ${3:rc_name_or_id}"
+        ],
+        "description": " Reverse the roles of primary and secondary volumes in a stand-alone Metro Mirror or Global Mirror relationship when that relationship is in a consistent state\n Example: switchrcrelationship -primary master rccopy2"
+    }
+    //Drive Service command
+    "ibm_drive_service_update":{
+        "prefix":["ibm_drive_service, applydrivesoftware, driveupdate"],
+        "body":[
+            "svctask applydrivesoftware -file ${1:code_package_name} -type firmware ${2|-all,-drive (ID)|} -allowdowngrade -allowreinstall"
+        ],
+        "description": " Update drives\n Example: applydrivesoftware -file drivemicrocodepackagev1 -type firmware -drive 6 -allowdowngrade -allowreinstall\n There are some more parameters, but these are optional"
+    }
+    "ibm_drive_service_cancel_drive_update":{
+        "prefix":["ibm_drive_service, driveupdate_cancel"],
+        "body":[
+            "svctask applydrivesoftware -cancel"
+        ],
+        "description": " Specifies that the Drive update be stopped"
+    }
+    "ibm_drive_service_list_driveupdateprogress":{
+        "prefix":["ibm_drive_service, lsdriveupgradeprogress"],
+        "body":[
+            "lsdriveupgradeprogress"
+        ],
+        "description": " View the status or progress of drives with pending downloads\n Example: lsdriveupgradeprogress -delim :\n Example: lsdriveupgradeprogress 11"
+    }
+    "ibm_drive_service_triggerdrivedump":{
+        "prefix":["ibm_drive_service, triggerdrivedump"],
+        "body":[
+            "svctask triggerdrivedump ${1:drive_id}"
+        ],
+        "description": " Collect support data from a disk drive"
+    }
+    "ibm_drive_service_drive_task":{
+        "prefix":["ibm_drive_service, chdrive_task"],
+        "body":[
+            "svctask chdrive -task ${1|format,certify,recover,erase|} ${2:drivename_or_id}"
+        ],
+        "description": " Causes the drive to perform a task\n Example: chdrive -task erase 6"
+    }
+    "ibm_drive_service_drive_props":{
+        "prefix":["ibm_drive_service, chdrive_use"],
+        "body":[
+            "svctask chdrive -use ${1|unused,candidate,spare,failed|} ${2:drivename_or_id}"
+        ],
+        "description": " Describes the role of the drive\n Example: chdrive -use candidate 6"
+    }
+    "ibm_drive_service_list_drive":{
+        "prefix":["ibm_drive_service, lsdrive"],
+        "body":[
+            "lsdrive"
+        ],
+        "description": " Display configuration information and drive vital product data\n Example: lsdrive (ID) // ID is Optional"
+    }
+    //enclosure command
+    "ibm_enclosure_mgmt_ch_enclosurestatus":{
+        "prefix":["ibm_enclosure_mgmt, chenclosure_mgmt"],
+        "body":[
+            "svctask chenclosure -managed ${1|yes,no|} ${2:enclosure_id}"
+        ],
+        "description": " Changes the enclosure to a managed or unmanaged enclosure.\n Example: chenclosure -managed no 1"
+    }
+    "ibm_enclosure_mgmt_ch_enclosure_id":{
+        "prefix":["ibm_enclosure_mgmt, chenclosure_id"],
+        "body":[
+            "svctask chenclosure -id ${1:enclosure_id_old} ${2:enclosure_id_new}"
+        ],
+        "description": " Changes the enclosure ID after you replace the enclosure, and enables you to control what is on the front panel\n Example: chenclosure -id 4 7"
+    }
+    "ibm_enclosure_mgmt_list_enclosure":{
+        "prefix":["ibm_enclosure_mgmt, lsenclosure"],
+        "body":[
+            "lsenclosure"
+        ],
+        "description": " View a summary of the enclosures\n Example: lsenclosure (ID) // ID is Optional"
+    }
+    "ibm_enclosure_mgmt_list_enclosurebattery":{
+        "prefix":["ibm_enclosure_mgmt, lsenclosurebattery"],
+        "body":[
+            "lsenclosurebattery"
+        ],
+        "description": " Display information about the batteries\n Example: lsenclosurebattery -battery (battery_id) (enclosure_id)\n lsenclosurebattery -battery 0 2"
+    }
+    "ibm_enclosure_mgmt_list_enclosurecandidate":{
+        "prefix":["ibm_enclosure_mgmt, lscontrolenclosurecandidate"],
+        "body":[
+            "lscontrolenclosurecandidate"
+        ],
+        "description": " Display a list of all control enclosures you can add to the current system"
+    }
+    "ibm_enclosure_mgmt_list_enclosurecanister":{
+        "prefix":["ibm_enclosure_mgmt, lsenclosurecanister"],
+        "body":[
+            "lsenclosurecanister"
+        ],
+        "description": " View a detailed status for each canister in an enclosure\n Example: lsenclosurecanister -canister (canister_id) (enclosure_id)\n lsenclosurecanister -canister 0 2"
+    }
+    "ibm_enclosure_mgmt_list_enclosurefan":{
+        "prefix":["ibm_enclosure_mgmt, lsenclosurefanmodule"],
+        "body":[
+            "lsenclosurefanmodule"
+        ],
+        "description": " Report the status of each fan module and the contained fans in an enclosure\n Example: lsenclosurefanmodule -fanmodule (fanmodule_id) (enclosure_id)\n lsenclosurefanmodule -fanmodule 0 2"
+    }
+    "ibm_enclosure_mgmt_list_enclosurepsu":{
+        "prefix":["ibm_enclosure_mgmt, lsenclosurepsu"],
+        "body":[
+            "lsenclosurepsu"
+        ],
+        "description": " Information about each power-supply unit (PSU) in the enclosure\n Example: lsenclosurepsu -psu (psu_id) (enclosure_id)\n lsenclosurepsu -psu 0 2"
+    }
+    "ibm_enclosure_mgmt_list_enclosureslot":{
+        "prefix":["ibm_enclosure_mgmt, lsenclosureslot"],
+        "body":[
+            "lsenclosureslot"
+        ],
+        "description": " Information about each drive slot in the enclosure.\n Example: lsenclosureslot -slot (slot_id) (enclosure_id)\n lsenclosureslot -slot 0 2"
+    }
+    "ibm_enclosure_mgmt_list_enclosurestats":{
+        "prefix":["ibm_enclosure_mgmt, lsenclosurestats"],
+        "body":[
+            "lsenclosurestats"
+        ],
+        "description": " Display the most recent values (averaged) of all enclosure statistics\n Example: lsenclosurestats -history (stat_list) (enclosure_id)\n lsenclosurestats -history power_w 1"
+    }
+    "ibm_enclosure_mgmt_list_enclosuredump":{
+        "prefix":["ibm_enclosure_mgmt, triggerenclosuredump"],
+        "body":[
+            "svctask triggerenclosuredump -enclosure ${1:enclosure_id}"
+        ],
+        "description": " Force the specified enclosure or enclosures to dump data\n Example: triggerenclosuredump -enclosure (enclosure_id) //-enclosure (id) is Optional\n lsenclosurestats -enclosure 1"
+    }
+    "ibm_enclosure_mgmt_list_sas_fabric":{
+        "prefix":["ibm_enclosure_mgmt, lssasfabric"],
+        "body":[
+            "lssasfabric"
+        ],
+        "description": " See which canisters are visible to a node, and the order of these canisters\n Example: lssasfabric -delim (delimiter)\n lsenclosurestats -delim ;\n Data is separated from its header by the specified delimiter, in this case with ; \n There are some more parameters, but these are optional"
+    }
+    //Call Home and Events
+    "ibm_callhome_ch_callhome_cloud":{
+        "prefix":["ibm_callhome, chcloudcallhome"],
+        "body":[
+            "svctask chcloudcallhome ${1|-enable,-disable|}"
+        ],
+        "description": " Enable or disable the Cloud Call Home\n Example: chcloudcallhome -enable"
+    }
+    "ibm_callhome_ch_mail":{
+        "prefix":["ibm_callhome, chemail"],
+        "body":[
+            "svctask chemail -reply ${1:customer_email_address} -contact \"${2:contact_name}\" -primary \"${3:primary_telephone_number}\" -location \"${4:location}\" -contact2 \"${5:contact_name2}\" -primary2 \"${6:primary_telephone_number}\" -organization ${7:organization} -address \"${8:address}\" -city \"${9:city}\" -state ${10:state} -zip ${11:zip} -country ${12:country}"
+        ],
+        "description": "Set or modify contact information for email event notifications"
+    }
+    "ibm_callhome_ch_mail_server":{
+        "prefix":["ibm_callhome, mkemailserver, chemailserver"],
+        "body":[
+            "svctask ${1|chemailserver,mkemailserver|} -ip ${2:ip_address_or_domain_name} -port ${3:25} ${4:email_server_name_or_id}"
+        ],
+        "description": " Modify | Create the parameters of an existing email server\n Example: svctask mkemailserver -ip 192.168.0.125 -port 25	0\n Example: svctask chemailserver -ip 192.168.0.125 -port 25	0"
+    }
+    "ibm_callhome_ch_mail_user":{
+        "prefix":["ibm_callhome, mkemailuser, chemailuser"],
+        "body":[
+            "svctask ${1|chemailuser,mkemailuser|} -address ${2:customer_email_address} -error ${3|on,off|} -warning ${4|on,off|} -info ${5|on,off|} ${6:name_or_id}"
+        ],
+        "description": " Modify | Create the settings that are defined for an email recipient\n Example: svctask mkemailuser -address test@email.de -error on -info on -inventory on -warning on 0\n Example: svctask chemailuser -address test@email.de -error on -info on -inventory on -warning on 0"
+    }
+    "ibm_callhome_ch_snmp_server_two":{
+        "prefix":["snmpserver, mksnmpserver, chsnmpserver"],
+        "body":[
+            "svctask ${1|mksnmpserver,chsnmpserver|} -ip ${1:ip_address_or_domain_name} -error ${2|on,off|} -warning ${3|on,off|} -info ${4|on,off|} -port ${5|161,162|} ${6:name_or_id}"
+        ],
+        "description": " SNMPv2!! This diagram is for SNMPv2\n Example: svctask mksnmpserver -ip 192.168.0.125 -error on -info off -inventory off -port 162 0\n Example: svctask chsnmpserver -ip 192.168.0.125 -error on -info on -inventory on -port 162 0"
+    }
+    "ibm_callhome_list_callhome_cloud":{
+        "prefix":["ibm_callhome, lscloudcallhome"],
+        "body":[
+            "lscloudcallhome"
+        ],
+        "description": "View the status of the Call Home information that is sent to a server in the Cloud"
+    }
+    "ibm_callhome_list_callhome_emailserver":{
+        "prefix":["ibm_callhome, lsemailserver"],
+        "body":[
+            "lsemailserver"
+        ],
+        "description": "Display a concise list or a detailed view of email servers that are configured on the system\n Example: lsemailserver (id) // ID is Optional"
+    }
+    "ibm_callhome_list_callhome_emailserver":{
+        "prefix":["ibm_callhome, lsemailuser"],
+        "body":[
+            "lsemailuser"
+        ],
+        "description": "Generate a report that lists the email event notification settings for all email recipients, an individual email recipient\n Example: lsemailuser (id) // ID is Optional"
+    }
+    "ibm_callhome_list_callhome_proxy":{
+        "prefix":["ibm_callhome, lsproxy "],
+        "body":[
+            "lsproxy "
+        ],
+        "description": "Display the system-wide web proxy server configuration"
+    }
+    "ibm_callhome_list_callhome_snmpserver":{
+        "prefix":["ibm_callhome, lssnmpserver"],
+        "body":[
+            "lssnmpserver"
+        ],
+        "description": "Return a concise list or a detailed view of SNMP servers that are configured on the system\n Example: lssnmpserver (id) // ID is Optional"
+    }
+    "ibm_callhome_rm_callhome_emailserver":{
+        "prefix":["ibm_callhome, rmemailserver"],
+        "body":[
+            "rmemailserver ${1:server_id_or_name}"
+        ],
+        "description": "Delete the specified email server object\n Example: rmemailserver (id) // ID is Optional"
+    }
+    "ibm_callhome_rm_callhome_emailuser":{
+        "prefix":["ibm_callhome, rmemailuser"],
+        "body":[
+            "rmemailuser ${1:user_id_or_name}"
+        ],
+        "description": " Remove a previously defined email recipient from the system\n Example: rmemailuser (id) // ID is Optional"
+    }
+    "ibm_callhome_rm_callhome_proxy":{
+        "prefix":["ibm_callhome, rmproxy "],
+        "body":[
+            "rmproxy ${1:}"
+        ],
+        "description": "Remove the system-wide web proxy server configuration"
+    }
+    "ibm_callhome_rm_callhome_snmpserver":{
+        "prefix":["ibm_callhome, rmsnmpserver"],
+        "body":[
+            "rmsnmpserver ${1:server_id_or_name}"
+        ],
+        "description": "Delete the specified Simple Network Management Protocol (SNMP) server\n Example: rmsnmpserver (id) // ID is Optional"
+    }
+    //"ch_snmp_server_three":{
+    //    "prefix":["chsnmpserver, snmpserver"],
+    //    "body":[
+    //        "svctask chsnmpserver -ip ${1:ip_address_or_domain_name} -error ${2|on,off|} -warning ${3|on,off|} -info ${4|on,off|} -port ${5|161,162|} ${6:name_or_id}"
+    //    ],
+    //    "description": " SNMPv2!! This diagram is for SNMPv2\n Example: svctask chemailuser -ip 192.168.0.125 -error on -info on -inventory on -port 162 0"
+    //}
+    "ibm_callhome_testemail":{
+        "prefix":["ibm_callhome, testemail"],
+        "body":[
+            "testemail -${1|all,user_name,user_id|}"
+        ],
+        "description": "Send an email notification to one user or all users of the email notification function to verify correct operation.\n Example: testemail -all"
+    }
+    //Security
+    "ibm_security_ch_security":{
+        "prefix":["ibm_security, chsecurity"],
+        "body":[
+            "chsecurity -clitimeout ${1:5-240} -guitimeout ${2:5-240} -maxfailedlogins ${3:0-10} -lockoutperiod ${4:10-120} -resetpolicy ${5|yes,no|} -restapitimeout ${6:10-120} -sslprotocol ${7:2-7} -sshprotocol ${8:1-3}"
+        ],
+        "description": " Change the basic security settings for a system\n There are some more parameters, but these are optional"
+    }
+    "ibm_security_ch_security_pw":{
+        "prefix":["ibm_security, ch_pw_security"],
+        "body":[
+            "chsecurity -minpasswordlength ${1:6-64} -checkpasswordhistory ${2|yes,no|} -expirywarning ${3:0-30} -maxpasswordhistory ${4:0-365} -passwordexpiry ${5:0-365} -passworddigits ${6:0-3} -passwordlowercase ${7:0-3} -passwordspecialchars ${8:0-3} -passworduppercase ${9:0-3}"
+        ],
+        "description": " Change the password security settings for a system\n There are some more parameters, but these are optional"
+    }
+    "ibm_security_ch_supuser_security":{
+        "prefix":["ibm_security, ch_spuser_security"],
+        "body":[
+            "chsecurity -disablesuperuserrest ${1|yes,no|} -disablesuperusergui ${2|yes,no|} -superuserlocking ${3|enable,disable|} -superusermultifactor ${4|yes,no|}"
+        ],
+        "description": " Change the superuser security settings for a system\n There are some more parameters, but these are optional"
+    }
+    "ibm_security_vdiskprotection":{
+        "prefix":["ibm_security, vdiskprotection, chsystem"],
+        "body":[
+            "chsystem -vdiskprotectionenabled ${1|yes,no|} -vdiskprotectiontime ${2:15-1440}"
+        ],
+        "description": "Turn on volume protection and set the protection time between 15-1440 minutes"
+    }
+    //Encryption commands
+    "ibm_encryption_usb":{
+        "prefix":["ibm_encryption, chencryption"],
+        "body":[
+            "chencryption -usb ${1|enable,disable,validate|}"
+        ],
+        "description": " Specifies whether USB encryption is enabled (or disabled) or the encryption keys are validated\n Example: chencryption -usb enable"
+    }
+    "ibm_encryption_usb_new_key":{
+        "prefix":["ibm_encryption, chencryption_usb_new_key"],
+        "body":[
+            "chencryption -usb newkey -key ${1|prepare,commit,cancel|}"
+        ],
+        "description": " Generates a new encryption key on a USB flash drive that is attached to the system.\n Example: chencryption -usb newkey -key commit"
+    }
+    "ibm_encryption_server":{
+        "prefix":["ibm_encryption, chencryption"],
+        "body":[
+            "chencryption -keyserver ${1|enable,disable|}"
+        ],
+        "description": " Specifies whether Keyserver encryption is enabled or disabled\n chencryption -keyserver enable"
+    }
+    "ibm_encryption_server_new_key":{
+        "prefix":["ibm_encryption, chencryption_server_new_key"],
+        "body":[
+            "chencryption -keyserver newkey -key ${1|prepare,commit,cancel|}"
+        ],
+        "description": " Generates a new encryption key on a Keyserver flash drive that is attached to the system.\n Example: chencryption -keyserver newkey -key prepare"
+    }
+    "ibm_encryption_ch_keyserver":{
+        "prefix":["ibm_encryption, chkeyserver"],
+        "body":[
+            "chkeyserver -ip ${1:ip_address_or_domain_name}"
+        ],
+        "description": " Change the attributes for a key server object.\n Example: chkeyserver -primary KeyServer2\n Example: chkeyserver -name zlatibr4\n There are some more parameters, but these are optional"
+    }
+    "ibm_encryption_mk_keyserver":{
+        "prefix":["ibm_encryption, mkkeyserver"],
+        "body":[
+            "mkkeyserver -ip ${1:ip_address_or_domain_name} -name ${2:key_server_name} -sslcert ${3:certificate_file}"
+        ],
+        "description": " Create a key server object\n Example: mkkeyserver -ip servername.example.com -sslcert /tmp/isklm_public_server_cert.pem -primary\n Example: mkkeyserver -ip 9.174.157.3 -name pogba_zibra -sslcert pogba_zibra_system_cert.pem\n There are some more parameters, but these are optional"
+    }
+    "ibm_encryption_rm_keyserver":{
+        "prefix":["ibm_encryption, rmkeyserver"],
+        "body":[
+            "rmkeyserver ${1:obj_id_name}"
+        ],
+        "description": " Change the attributes for a key server object.\n Example: rmkeyserver 2"
+    }
+    "ibm_encryption_test_keyserver":{
+        "prefix":["ibm_encryption, testkeyserver"],
+        "body":[
+            "testkeyserver ${1:obj_id_name}"
+        ],
+        "description": " Change the attributes for a key server object.\n Example: testkeyserver 1"
+    }
+    "ibm_encryption_list":{
+        "prefix":["ibm_encryption, lsencryption"],
+        "body":[
+            "lsencryption"
+        ],
+        "description": " Display system encryption information\n Example: chkeyserver -delim :"
+    }
+    "ibm_encryption_list_server":{
+        "prefix":["ibm_encryption, lskeyserver"],
+        "body":[
+            "lskeyserver"
+        ],
+        "description": " Display the key servers that are available to the system\n Example: lskeyserver (obj_id_name)\n Example: lskeyserver -delim :"
+    }
+    //Fibre Channel portset
+    "ibm_fc_portset_list_member":{
+        "prefix":["ibm_fc_portset, lsfcportsetmember"],
+        "body":[
+            "lsfcportsetmember "
+        ],
+        "description": " List the mapping between Fibre Channel I/O port ID and portset objects.\n There are some more parameters, but these are optional"
+    }
+    "ibm_fc_portset_add_member":{
+        "prefix":["ibm_fc_portset, addfcportsetmember"],
+        "body":[
+            "addfcportsetmember -portset ${1:portset_id_name} -fcioportid ${2:fc_io_port_id}"
+        ],
+        "description": " To associate a Fibre Channel IO port ID with portset. A Fibre Channel IO port ID can be associated to multiple portsets at the same time and this association applies to all nodes in a cluster.\n Example: addfcportsetmember -portset portset5 -fcioportid 1"
+    }
+    "ibm_fc_portset_rm_member":{
+        "prefix":["ibm_fc_portset, rmfcportsetmember"],
+        "body":[
+            "rmfcportsetmember -portset ${1:portset_id_name} -fcioportid ${2:fc_io_port_id}"
+        ],
+        "description": " Remove Fibre Channel IO port ID association from the portset\n Example: rmfcportsetmember -portset portset5 -fcioportid 1"
+    }
+    //FlashCopy commands
+    "ibm_flashcopy_ch_consistgrp":{
+        "prefix":["ibm_flashcopy, chfcconsistgrp"],
+        "body":[
+            "chfcconsistgrp -name ${1:new_name_arg} ${2:fc_consist_group_id_name}"
+        ],
+        "description": " Change the name of a consistency group or mark the group for auto-deletion.\n Example: chfcconsistgrp -name testgrp1 1\n Example: chfcconsistgrp -name testgrp1 -autodelete an 1\n -autodelete -> Deletes the consistency group when the last mapping that it contains is deleted or removed from the consistency group"
+    }
+    "ibm_flashcopy_ch_consistgrp":{
+        "prefix":["ibm_flashcopy, chfcmap"],
+        "body":[
+            "chfcmap -name ${1:new_name} ${2:fcmap_id_name}"
+        ],
+        "description": " Modify attributes of an existing mapping.\n Example: chfcmap -name testmap 1\n There are some more parameters, but these are optional"
+    }
+    "ibm_flashcopy_list_consistgrp":{
+        "prefix":["ibm_flashcopy, lsfcconsistgrp"],
+        "body":[
+            "lsfcconsistgrp"
+        ],
+        "description": " Display a concise list or a detailed view of FlashCopy consistency groups that are visible to the system\n Example: lsfcconsistgrp -delim : 1\n There are some more parameters, but these are optional"
+    }
+    "ibm_flashcopy_list_fcmap":{
+        "prefix":["ibm_flashcopy, lsfcmap"],
+        "body":[
+            "lsfcmap"
+        ],
+        "description": " List that contains concise information about all of the FlashCopy mappings that are visible to the system, or detailed information for a single FlashCopy mapping\n Example: lsfcmap -showhidden\n There are some more parameters, but these are optional"
+    }
+    "ibm_flashcopy_list_fcmapcandidate":{
+        "prefix":["ibm_flashcopy, lsfcmapcandidate"],
+        "body":[
+            "lsfcmapcandidate"
+        ],
+        "description": " List all of the volumes that are associated with fewer than 256 FlashCopy mappings."
+    }
+    "ibm_flashcopy_list_fcmapdependentmaps":{
+        "prefix":["ibm_flashcopy, lsfcmapdependentmaps"],
+        "body":[
+            "lsfcmapdependentmaps"
+        ],
+        "description": " Display the FlashCopy mappings that depend on the user specified mapping."
+    }
+    "ibm_flashcopy_list_rmvdiskdependentmaps":{
+        "prefix":["ibm_flashcopy, lsrmvdiskdependentmaps"],
+        "body":[
+            "lsrmvdiskdependentmaps"
+        ],
+        "description": " Display all FlashCopy mappings that must be stopped for the specified volume to be deleted."
+    }
+    "ibm_flashcopy_mk_fcconsistgrp":{
+        "prefix":["ibm_flashcopy, mkfcconsistgrp"],
+        "body":[
+            "mkfcconsistgrp -name ${1:consist_group_name} -autodelete"
+        ],
+        "description": " Create a new FlashCopy consistency group and identification name"
+    }
+    "ibm_flashcopy_mk_fcmap":{
+        "prefix":["ibm_flashcopy, mkfcmap"],
+        "body":[
+            "mkfcmap -source ${1:src_vdisk_id_name} -target ${2:target_vdisk_id_name} -name ${3:new_name_arg}"
+        ],
+        "description": " Create a new FlashCopy mapping, which maps a source volume to a target volume for subsequent copying.\n Example: mkfcmap -source 0 -target 2 -name mapone"
+    }
+    "ibm_flashcopy_rm_fcconsistgrp":{
+        "prefix":["ibm_flashcopy, rmfcconsistgrp"],
+        "body":[
+            "rmfcconsistgrp ${1:consist_group_name_or_id}"
+        ],
+        "description": " Delete a FlashCopy consistency group."
+    }
+    "ibm_flashcopy_rm_fcmap":{
+        "prefix":["ibm_flashcopy, rmfcmap"],
+        "body":[
+            "rmfcmap ${1:fc_map_name_or_id}"
+        ],
+        "description": " Delete an existing mapping"
+    }
+    "ibm_flashcopy_run_fcconsistgrp":{
+        "prefix":["ibm_flashcopy, startfcconsistgrp"],
+        "body":[
+            "startfcconsistgrp ${1:consist_group_name_or_id}"
+        ],
+        "description": " Start a FlashCopy consistency group.\n There are some more parameters, but these are optional"
+    }
+    "ibm_flashcopy_run_fcmap":{
+        "prefix":["ibm_flashcopy, startfcmap"],
+        "body":[
+            "startfcmap ${1:fc_map_name_or_id}"
+        ],
+        "description": " Start an existing mapping.\n There are some more parameters, but these are optional"
+    }
+    "ibm_flashcopy_stop_fcconsistgrp":{
+        "prefix":["ibm_flashcopy, stopfcconsistgrp"],
+        "body":[
+            "stopfcconsistgrp ${1:consist_group_name_or_id}"
+        ],
+        "description": " Stop a FlashCopy consistency group.\n There are some more parameters, but these are optional"
+    }
+    "ibm_flashcopy_stop_fcmap":{
+        "prefix":["ibm_flashcopy, rmfcmap"],
+        "body":[
+            "stopfcmap ${1:fc_map_name_or_id}"
+        ],
+        "description": " Stop an existing mapping.\n There are some more parameters, but these are optional"
+    }
+    //Host_hostcluster commands
+    //hostcluster
+    "ibm_hostcluster_add_member":{
+        "prefix":["ibm_hostcluster, addhostclustermember"],
+        "body":[
+            "addhostclustermember -host ${1:host_name_or_id} ${2:hostcluster_name_or_id}"
+        ],
+        "description": " Add a host object to a host cluster"
+    }
+    "ibm_hostcluster_ch_hostname":{
+        "prefix":["ibm_hostcluster, chhostcluster"],
+        "body":[
+            "chhostcluster -name ${1:new_name_arg} ${2:hostcluster_oldname_or_id}"
+        ],
+        "description": " Change the name or type of a host object\n Example: chhostcluster -name hostcluster4 hostcluster3\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_ch_hostsite":{
+        "prefix":["ibm_hostcluster, chhostcluster"],
+        "body":[
+            "chhostcluster -site ${1:new_site_name_or_id} ${2:hostcluster_name_or_id}"
+        ],
+        "description": " Change the name or type of a host object\n Example: chhostcluster -site site1 (hostcluster_id)\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_ls_host":{
+        "prefix":["ibm_hostcluster, lshostcluster"],
+        "body":[
+            "lshostcluster"
+        ],
+        "description": " List with concise information about all the host cluster visible to the system and detailed information about a single host.\n Example: lshostcluster (ID)\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_ls_hostmember":{
+        "prefix":["ibm_hostcluster, lshostclustermember"],
+        "body":[
+            "lshostclustermember ${1:hostcluster_name_or_id}"
+        ],
+        "description": " List with host information for hosts that belong to the specified host cluster.\n Example: lshostclustermember (ID)\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_ls_hostvdiskmap":{
+        "prefix":["ibm_hostcluster, lshostclustervolumemap"],
+        "body":[
+            "lshostclustervolumemap ${1:hostcluster_name_or_id}"
+        ],
+        "description": " List of volumes that are mapped to all host clusters (or to a specific host cluster).\n Example: lshostclustervolumemap (ID)\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_mk_hostcluster":{
+        "prefix":["ibm_hostcluster, mkhostcluster"],
+        "body":[
+            "svctask mkhostcluster -name ${1:new_name}"
+        ],
+        "description": " Create a host cluster object.\n Example: svctask mkhostcluster -name Hostclustername\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_mk_volumehostclustermap":{
+        "prefix":["ibm_hostcluster, mkvolumehostclustermap"],
+        "body":[
+            "svctask mkvolumehostclustermap -hostcluster ${1:hostcluster_name_or_id} ${2:volume_name_or_id}"
+        ],
+        "description": " Generate a new mapping between a volume and a host cluster on a clustered system.\n Example: svctask mkvolumehostclustermap -hostcluster 0 2\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_rm_hostcluster":{
+        "prefix":["ibm_hostcluster, rmhostcluster"],
+        "body":[
+            "rmhostcluster -removeallhosts -force ${1:hostcluster_name_or_id}"
+        ],
+        "description": " Delete a host cluster object\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_rm_removemappings":{
+        "prefix":["ibm_hostcluster, rmhostcluster_removemappings"],
+        "body":[
+            "rmhostcluster -removemappings ${1:hostcluster_name_or_id}"
+        ],
+        "description": " IMPORTANT: Specifies that all shared volume mappings in the host cluster are removed when the host cluster is removed. The mappings are deleted before the host cluster is deleted\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_rm_host_removemappings":{
+        "prefix":["ibm_hostcluster, rmhost_removemappings"],
+        "body":[
+            "rmhostcluster -host ${1:host_name_or_id} -removemappings -force ${2:hostcluster_name_or_id}"
+        ],
+        "description": " IMPORTANT: Specifies that the host that is removed from the host cluster retains the host cluster's shared volume mappings\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_rm_host_keepmappings":{
+        "prefix":["ibm_hostcluster, rmhost_keepmappings"],
+        "body":[
+            "rmhostcluster -host ${1:host_name_or_id} -keepmappings -force ${2:hostcluster_name_or_id}"
+        ],
+        "description": " IMPORTANT: Specifies that the host that is removed from the host cluster retains the host cluster's shared volume mappings.\n There are some more parameters, but these are optional"
+    }
+    "ibm_hostcluster_rm_volumehostclustermap":{
+        "prefix":["ibm_hostcluster, rmvolumehostclustermap"],
+        "body":[
+            "rmvolumehostclustermap -hostcluster ${1:hostcluster_name_or_id} ${2:vdisk_name_or_id}"
+        ],
+        "description": " Remove an existing host cluster mapping to a volume on a clustered system.\n There are some more parameters, but these are optional"
+    }
+    //host
+    "ibm_host_add_hostiogrp":{
+        "prefix":["ibm_host, addhostiogrp"],
+        "body":[
+            "addhostiogrp ${1|iogrpall,-iogrp (iogrp_list)|} ${2:host_name_or_id}"
+        ],
+        "description": " To map I/O groups to an existing host object\n Example: addhostiogrp -iogrpall testhost"
+    }
+    "ibm_host_add_hostport":{
+        "prefix":["ibm_host, addhostport"],
+        "body":[
+            "addhostport -fcwwpn ${1:fcwwpn_list} ${2:host_name_or_id}"
+        ],
+        "description": " Adds a list of HBA WWPNsto the specified host object.\n Example: addhostport -fcwwpn c050760c64600006:c050760c64600000 host1\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_ch_hostname":{
+        "prefix":["ibm_host, chhost"],
+        "body":[
+            "chhost -name ${1:new_name_arg} ${2:host_oldname_or_id}"
+        ],
+        "description": " Change the name or type of a host object\n Example: chhost -name host4 host3\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_ch_hostsite":{
+        "prefix":["ibm_host, chhost"],
+        "body":[
+            "chhost -site ${1:new_site_name_or_id} ${2:host_name_or_id}"
+        ],
+        "description": " Change the name or type of a host object\n Example: chhost -site site1 host3\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_ls_host":{
+        "prefix":["ibm_host, lshost"],
+        "body":[
+            "lshost"
+        ],
+        "description": " List with concise information about all the hosts visible to the system and detailed information about a single host.\n Example: lshost (ID)\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_ls_hostiogrp":{
+        "prefix":["ibm_host, lshostiogrp"],
+        "body":[
+            "lshostiogrp"
+        ],
+        "description": " List the I/O groups that are associated with a specified host.\n Example: lshostiogrp (ID)\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_mk_host":{
+        "prefix":["ibm_host, mkhost"],
+        "body":[
+            "svctask mkhost -name ${1:new_name} -fcwwpn ${2:fcwwpn_list}"
+        ],
+        "description": " List the I/O groups that are associated with a specified host.\n Example: svctask mkhost -name Hostname -fcwwpn c050760c64600008:c050760c64600002\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_rm_host":{
+        "prefix":["ibm_host, rmhost"],
+        "body":[
+            "rmhost ${1:host_name_or_id}"
+        ],
+        "description": " delete a host object\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_rm_hostiogrp":{
+        "prefix":["ibm_host, rmhostiogrp"],
+        "body":[
+            "rmhostiogrp -iogrpall ${1:host_name_or_id}"
+        ],
+        "description": " Delete mappings between one or more input/output (I/O) groups and a specified host object.\n There are some more parameters, but these are optional"
+    }
+    "ibm_host_ch_hostport":{
+        "prefix":["ibm_host, rmhostport"],
+        "body":[
+            "rmhostport -fcwwpn ${1:fcwwpn_list} ${2:host_name_or_id}"
+        ],
+        "description": " Delete worldwide WWPNs from an existing host object\n Example: rmhostport -fcwwpn 210100E08B251EE6 host1\n There are some more parameters, but these are optional"
+    }
+    //Licensing and featurization commands
+    "ibm_license_activatefeature":{
+        "prefix":["ibm_license, activatefeature"],
+        "body":[
+            "activatefeature ${1|-licensekey,-licensekeyfile|} ${2:key-or_filepath}"
+        ],
+        "description": " Activate a feature using a license key or keyfile.\n Example: activatefeature -licensekey 0123-4567-89AB-CDEF\n Example: activatefeature -licensekeyfile /tmp/keyfile.xml\n There are some more parameters, but these are optional"
+    }
+    "ibm_license_deactivatefeature":{
+        "prefix":["ibm_license, deactivatefeature"],
+        "body":[
+            "deactivatefeature ${1:feature_id}"
+        ],
+        "description": " Deactivates a license feature\n There are some more parameters, but these are optional"
+    }
+    "ibm_license_list_feature":{
+        "prefix":["ibm_license, lsfeature"],
+        "body":[
+            "lsfeature"
+        ],
+        "description": " List the features that are available for the current system code release.\n There are some more parameters, but these are optional"
+    }
+    "ibm_license_list_license":{
+        "prefix":["ibm_license, lslicense"],
+        "body":[
+            "lslicense"
+        ],
+        "description": " Display current license settings for system features\n There are some more parameters, but these are optional"
+    }
+    //Livedump commands
+    "ibm_livedump_cancellivedump":{
+        "prefix":["ibm_livedump, cancellivedump"],
+        "body":[
+            "cancellivedump ${1:node_name_or_id}"
+        ],
+        "description": " Cancel a live dump"
+    }
+    "ibm_livedump_list_livedump":{
+        "prefix":["ibm_livedump, lslivedump"],
+        "body":[
+            "lslivedump ${1:node_name_or_id}"
+        ],
+        "description": " List a live dump"
+    }
+    "ibm_livedump_prep_livedump":{
+        "prefix":["ibm_livedump, preplivedump"],
+        "body":[
+            "preplivedump ${1:node_name_or_id}"
+        ],
+        "description": " Reserve the system resources that are required for livedump"
+    }
+    "ibm_livedump_mk_livedump":{
+        "prefix":["ibm_livedump, triggerlivedump"],
+        "body":[
+            "triggerlivedump ${1:node_name_or_id}"
+        ],
+        "description": " Capture the metadata that you want to dump, and write the dump file to the internal disk on the node."
+    }
+    //Managed disk commands
+    "ibm_mdisk_add_mdisk":{
+        "prefix":["ibm_mdisk, addmdisk"],
+        "body":[
+            "addmdisk -mdisk ${1:mdisk_name_or_id} -tier ${2|tier0_flash,tier1_flash,tier_enterprise,tier_nearline,tier_scm|} ${3:mdisk_group_name_or_id}"
+        ],
+        "description": " Add one or more managed disks to an existing storage pool.\n Example: addmdisk -mdisk mdisk13:mdisk14 -tier tier_nearline Group0\n To select the correct tier class use the IBM documentation"
+    }
+    "ibm_mdisk_ch_mdisk":{
+        "prefix":["ibm_mdisk, chmdisk"],
+        "body":[
+            "chmdisk -name ${1:new_name_arg} ${2:mdisk_group_name_or_id}"
+        ],
+        "description": " Modify the name or settings for a managed disk (MDisk).\n Example: chmdisk -tier tier0_flash mdisk13\n To select the correct tier class use the IBM documentation\n There are some more parameters, but these are optional"
+    }
+    "ibm_mdisk_detectmdisk":{
+        "prefix":["ibm_mdisk, detectmdisk"],
+        "body":[
+            "detectmdisk"
+        ],
+        "description": " Manually rescan the iSCSI or Fibre Channel network for any new managed disks (MDisks) that might have been added,\n and to rebalance MDisk access across all available controller device ports."
+    }
+    "ibm_mdisk_dumpallmdiskbadblocks":{
+        "prefix":["ibm_mdisk, dumpallmdiskbadblocks"],
+        "body":[
+            "dumpallmdiskbadblocks"
+        ],
+        "description": " Dump bad block counts to a dump file used by the fix procedures and the satask snap command."
+    }
+    "ibm_mdisk_dumpmdiskbadblocks":{
+        "prefix":["ibm_mdisk, dumpmdiskbadblocks"],
+        "body":[
+            "dumpmdiskbadblocks ${1:object_name_or_id}"
+        ],
+        "description": " Write the bad block counts and locations that are on a specified MDisk to a dump file for use by fix procedures."
+    }
+    "ibm_mdisk_includemdisk":{
+        "prefix":["ibm_mdisk, includemdisk"],
+        "body":[
+            "includemdisk ${1:object_name_or_id}"
+        ],
+        "description": " Include a disk that has been excluded by the system"
+    }
+    "ibm_mdisk_list_mdisk":{
+        "prefix":["ibm_mdisk, lsmdisk"],
+        "body":[
+            "lsmdisk"
+        ],
+        "description": " List or a detailed view of MDisks visible to the system. It can also list detailed information about a single MDisk\n Example: lsmdisk (ID)\n There are some more parameters, but these are optional"
+    }
+    "ibm_mdisk_list_mdiskcandidate":{
+        "prefix":["ibm_mdisk, lsmdiskcandidate"],
+        "body":[
+            "lsmdiskcandidate"
+        ],
+        "description": " List all unmanaged MDisks by MDisk ID\n There are some more parameters, but these are optional"
+    }
+    "ibm_mdisk_list_mdiskcandidate":{
+        "prefix":["ibm_mdisk, lsmdiskmember"],
+        "body":[
+            "lsmdiskmember ${1:mdisk/vdisk_name_or_id}"
+        ],
+        "description": " Display a list of volumes that use extents on the specified MDisk.\n That is, the volumes use extents on the managed disk that are specified by the MDisk ID.\n There are some more parameters, but these are optional"
+    }
+    "ibm_mdisk_list_mdiskextent":{
+        "prefix":["ibm_mdisk, lsmdiskextent"],
+        "body":[
+            "lsmdiskextent ${1:object_name_or_id}"
+        ],
+        "description": " Display the extent allocation between managed disks and volumes. The output lists a volume ID, volume copy ID, and the number of extents.\n There are some more parameters, but these are optional"
+    }
+    //Migration commands
+    "ibm_migrate_list_progress":{
+        "prefix":["ibm_migrate, lsmigrate"],
+        "body":[
+            "lsmigrate"
+        ],
+        "description": " Display the progress of all current data migration operations\n There are some more parameters, but these are optional"
+    }
+    "ibm_migrate_exts":{
+        "prefix":["ibm_migrate, migrateexts"],
+        "body":[
+            "migrateexts -source ${1:source_mdisk_name_or_id} -target ${2:target_mdisk_name_or_id} -exts ${3:object_name_or_id} -vdisk ${4:vdisk_name_or_id}"
+        ],
+        "description": " Migrate extents from one managed disk to another\n Example: migrateexts -source mdisk4 -target mdisk6 -exts 64 -vdisk vdisk4 \n There are some more parameters, but these are optional"
+    }
+    "ibm_migrate_toimage":{
+        "prefix":["ibm_migrate, migratetoimage"],
+        "body":[
+            "migratetoimage -vdisk ${1:source_vdisk_name_or_id} -mdisk ${2:unmanaged_target_mdisk_name_or_id} -tier ${3|tier0_flash,tier1_flash,tier_enterprise,tier_nearline,tier_scm|} -mdiskgrp ${4:mdisk_group_id_name}"
+        ],
+        "description": " Migrate data from a volume (image mode or managed mode) onto a new image mode volume copy.\n The target disk does not have to be in the same storage pool as the source disk.\n Example: migratetoimage -vdisk vdisk0 -mdisk mdisk5 -tier tier1_flash -mdiskgrp Pool1 \n There are some more parameters, but these are optional"
+    }
+    "ibm_migrate_vdisk":{
+        "prefix":["ibm_migrate, migratevdisk"],
+        "body":[
+            "migratevdisk -mdiskgrp ${1:new_mdisk_group_id_name} -vdisk ${2:vdisk_name_or_id}"
+        ],
+        "description": " Migrate an entire volume from one storage pool to another storage pool\n The target disk does not have to be in the same storage pool as the source disk.\n Example: migratevdisk -mdiskgrp Pool2 -vdisk 4\n There are some more parameters, but these are optional"
+    }
+    //Multifactor authentication commands
+    "ibm_multifactor_list_authmultifactorverify":{
+        "prefix":["ibm_multifactor, lsauthmultifactorverify"],
+        "body":[
+            "lsauthmultifactorverify"
+        ],
+        "description": " List the system-wide IBM Security Verify multifactor authentication configuration."
+    }
+    "ibm_multifactor_ch_authmultifactorverify":{
+        "prefix":["ibm_multifactor, chauthmultifactorverify"],
+        "body":[
+            "chauthmultifactorverify ${1|-enable,-disable|}"
+        ],
+        "description": " Change the system-wide IBM Security Verify multifactor authentication configuration.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_multifactor_list_authmultifactorduo":{
+        "prefix":["ibm_multifactor, lsauthmultifactorduo"],
+        "body":[
+            "lsauthmultifactorduo"
+        ],
+        "description": " List the system-wide Duo Security multifactor authentication configuration."
+    }
+    "ibm_multifactor_ch_authmultifactorduo":{
+        "prefix":["ibm_multifactor, chauthmultifactorduo"],
+        "body":[
+            "chauthmultifactorduo ${1|-enable,-disable|}"
+        ],
+        "description": " Change the system-wide Duo Security multifactor authentication configuration.\n There are a lot more parameters, but these are optional"
+    }
+    //Multiple IP addresses commands
+    "ibm_ethernet_ch_porthost":{
+        "prefix":["ibm_ethernet, chportethernet_host"],
+        "body":[
+            "chportethernet -host ${1|-yes,-no|} ${2:port_id}"
+        ],
+        "description": " Specifies port that is used for host attach (the existing system settings are retained).\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_ch_portstorage":{
+        "prefix":["ibm_ethernet, chportethernet_storage"],
+        "body":[
+            "chportethernet -storage ${1|-yes,-no|} ${2:port_id}"
+        ],
+        "description": " Specifies port that is used for storage attach (the existing system settings are retained).\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_ch_portstorage":{
+        "prefix":["ibm_ethernet, chportethernet_replication"],
+        "body":[
+            "chportethernet -replication ${1|-yes,-no|} ${2:port_id}"
+        ],
+        "description": " Specifies whether the port can be used for remote copy.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_ls_ip":{
+        "prefix":["ibm_ethernet, lsip"],
+        "body":[
+            "lsip"
+        ],
+        "description": " List the currently configured IP addresses.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_ls_portset":{
+        "prefix":["ibm_ethernet, lsportset"],
+        "body":[
+            "lsportset"
+        ],
+        "description": " This List shows the ID, portset name, and the number of IP addresses and hosts associated with each portset along with ownership group information.\n Example: portset (ID)\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_ls_portethernet":{
+        "prefix":["ibm_ethernet, lsportethernet"],
+        "body":[
+            "lsportethernet"
+        ],
+        "description": " List the properties and status of the storage system ethernet ports\n Example: lsportethernet -node 1 1\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_mk_ip":{
+        "prefix":["ibm_ethernet, mkip"],
+        "body":[
+            "mkip -node ${1:node_name_or_id} -port ${2:port_id} -ip ${3:ipv4_or_6_address} -prefix ${4:subnet_prefix} -gw ${5:gateway}"
+        ],
+        "description": " List the properties and status of the storage system ethernet ports\n Example: lsportethernet -node 1 1\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_mk_portset ":{
+        "prefix":["ibm_ethernet, mkportset "],
+        "body":[
+            "mkportset"
+        ],
+        "description": " Create a new portset\n Example: mkportset -name myportset -porttype fc \n There are a lot more parameters, but these are optional"
+    }
+    "ibm_ethernet_rm_ip":{
+        "prefix":["ibm_ethernet, rmip"],
+        "body":[
+            "rmip ${1:ip_address_id}"
+        ],
+        "description": " Delete an IP address specified by the IP address ID\n Specifies the row ID (lsip) of IP address to be deleted."
+    }
+    "ibm_ethernet_rm_portset":{
+        "prefix":["ibm_ethernet, rmportset"],
+        "body":[
+            "rmportset ${1:portset_name_or_id}"
+        ],
+        "description": " Delete the portset.\n Before deleting the FC port make sure if any Fibre Channel host or Fibre Channel IO port under the portset is defined."
+    }
+    //Provisioning policies commands
+    "ibm_provisioning_policie_ch":{
+        "prefix":["ibm_provisioning_policies, chprovisioningpolicy"],
+        "body":[
+            "chprovisioningpolicy -name ${1:new_name} ${2:policy_name_or__id}"
+        ],
+        "description": " Change the name of a provisioning policy on the system\n Example: chprovisioningpolicy -name dbVolumes provisioningpolicy5"
+    }
+    "ibm_provisioning_policie_list":{
+        "prefix":["ibm_provisioning_policies, lsprovisioningpolicy"],
+        "body":[
+            "lsprovisioningpolicy"
+        ],
+        "description": " List the provisioning policies available in the system\n Example: lsprovisioningpolicy provisioning_policy_name_or_id"
+    }
+    "ibm_provisioning_policie_mk":{
+        "prefix":["ibm_provisioning_policies, mkprovisioningpolicy"],
+        "body":[
+            "mkprovisioningpolicy -name ${1:name_of_new_policie} -capacitysaving ${2|none,thin,compressed|}"
+        ],
+        "description": " Create a new provisioning policy on the system\n Example mkprovisioningpolicy -name appVolumes -capacitysaving compressed"
+    }
+    "ibm_provisioning_policie_rm":{
+        "prefix":["ibm_provisioning_policies, rmprovisioningpolicy"],
+        "body":[
+            "rmprovisioningpolicy ${1:policy_name_or__id}"
+        ],
+        "description": " Remove a provisioning policy on the system.\n Example rmprovisioningpolicy (ID)"
+    }
+    //Safeguarded policy commands
+    "ibm_safeguarded_ch_policy":{
+        "prefix":["ibm_safeguarded, chsafeguardedpolicy"],
+        "body":[
+            "chsafeguardedpolicy -name ${1:new_safeguarded_policy_name} ${2:safeguarded_policy_name_or_id}"
+        ],
+        "description": " Change the name of an existing Safeguarded policies\n Example chsafeguardedpolicy -name mysgpolicy3 3"
+    }
+    "ibm_safeguarded_ls_policy":{
+        "prefix":["ibm_safeguarded, lssafeguardedpolicy"],
+        "body":[
+            "lssafeguardedpolicy ${1:safeguarded_policy_name_or_id}"
+        ],
+        "description": " List the Safeguarded policies"
+    }
+    "ibm_safeguarded_ls_schedule":{
+        "prefix":["ibm_safeguarded, lssafeguardedschedule"],
+        "body":[
+            "lssafeguardedschedule"
+        ],
+        "description": " Display the Safeguarded backup schedule that is associated with a Safeguarded policies.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_safeguarded_mk_policy":{
+        "prefix":["ibm_safeguarded, mksafeguardedpolicy"],
+        "body":[
+            "mksafeguardedpolicy -name ${1:safeguarded_policy_name} -backupunit ${2|minute,hour,day,week,month|} -backupinterval ${3:1-65535} -backupstarttime ${4:YYMMDDHHmm} -retentiondays ${5:num_days}"
+        ],
+        "description": "  Create a new Safeguarded policies to associate with the volume groups.\n Example mksafeguardedpolicy -name sgcpol1 -backupunit day -backupinterval 1 -backupstarttime 2109010100 -retentiondays 7"
+    }
+    "ibm_safeguarded_rm_policy":{
+        "prefix":["ibm_safeguarded, rmsafeguardedpolicy"],
+        "body":[
+            "rmsafeguardedpolicy ${1:safeguarded_policy_name_or_id}"
+        ],
+        "description": " Change the name of an existing Safeguarded policies\n Example chsafeguardedpolicy -name mysgpolicy3 3"
+    }
+    //Service information commands
+    "ibm_service_host":{
+        "prefix":["ibm_service, host"],
+        "body":[
+            "sainfo host -ip_or_name ${1:ip_addr_or_Hostname}"
+        ],
+        "description": " Change an IP address to a host name or change a host name to an IP address."
+    }
+    "ibm_service_list_bootdrive":{
+        "prefix":["ibm_service, lsbootdrive"],
+        "body":[
+            "sainfo lsbootdrive"
+        ],
+        "description": " Return the drive information of the internal boot drives for the specified node.\n Example: sainfo lsbootdrive -panel_name"
+    }
+    "ibm_service_list_cmdstatus":{
+        "prefix":["ibm_service, lscmdstatus"],
+        "body":[
+            "sainfo lscmdstatus"
+        ],
+        "description": " Display the status of any currently running service-aid task\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_fcportfeature":{
+        "prefix":["ibm_service, lsfcportfeature"],
+        "body":[
+            "sainfo lsfcportfeature"
+        ],
+        "description": " List the status of Fibre Channel port features.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_files":{
+        "prefix":["ibm_service, lsfiles"],
+        "body":[
+            "sainfo lsfiles"
+        ],
+        "description": " Display the files on the node that you want to retrieve with the satask cpfiles command.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_hardware":{
+        "prefix":["ibm_service, lshardware"],
+        "body":[
+            "sainfo lshardware"
+        ],
+        "description": " View the configured and actual hardware configuration of a node in the system.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_nodediscoverysubnet":{
+        "prefix":["ibm_service, lsnodediscoverysubnet"],
+        "body":[
+            "sainfo lsnodediscoverysubnet"
+        ],
+        "description": " List the IPv4 subnets that are used for local node discovery.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_nodeip":{
+        "prefix":["ibm_service, lsnodeip"],
+        "body":[
+            "sainfo lsnodeip"
+        ],
+        "description": " List the node IP addresses of Ethernet ports on the node.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_nodeipconnectivity":{
+        "prefix":["ibm_service, lsnodeipconnectivity"],
+        "body":[
+            "sainfo lsnodeipconnectivity"
+        ],
+        "description": " List the port level iSER (iSCSI Extensions for RDMA) clustering session connectivity information.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_servicenodes":{
+        "prefix":["ibm_service, lsservicenodes"],
+        "body":[
+            "sainfo lsservicenodes"
+        ],
+        "description": " Display a list of all the nodes that can be serviced by using the service assistant CLI.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_servicerecommendation":{
+        "prefix":["ibm_service, lsservicerecommendation"],
+        "body":[
+            "sainfo lsservicerecommendation"
+        ],
+        "description": " Determine what actions must be completed when you service a node.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_servicestatus":{
+        "prefix":["ibm_service, lsservicestatus"],
+        "body":[
+            "sainfo lsservicestatus"
+        ],
+        "description": " Display the status of a node.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_service_list_traceroute":{
+        "prefix":["ibm_service, traceroute"],
+        "body":[
+            "sainfo traceroute -ip_or_name ${1:ip_addr_or_Hostname}"
+        ],
+        "description": " Print wide area network (WAN) route packets to a specified host.\n There are a lot more parameters, but these are optional"
+    }
+    //Service task commands
+    "ibm_servicetask_add_nodediscoverysubnet":{
+        "prefix":["ibm_servicetask, addnodediscoverysubnet"],
+        "body":[
+            "satask addnodediscoverysubnet -net ${1:ipv4_subnet_subnet_prefix}"
+        ],
+        "description": " Add a node discovery subnet where candidate nodes can be discovered.\n Example: satask addnodediscoverysubnet -net 9.7.8.0/28"
+    }
+    "ibm_servicetask_ch_bootdrive":{
+        "prefix":["ibm_servicetask, chbootdrive"],
+        "body":[
+            "satask chbootdrive -sync"
+        ],
+        "description": " Synchronize a broken drive or field-replaceable unit (FRU) replacement drive or\n acknowledge an intentional swap over of boot drives into a replacement canister."
+    }
+    "ibm_servicetask_ch_cportfeature":{
+        "prefix":["ibm_servicetask, chfcportfeature"],
+        "body":[
+            "satask chfcportfeature -feature ${1|port_state,fdmi_discovery,fdmi_registration|} -enable ${2|yes,no|} -fcioportid ${3:port_index}"
+        ],
+        "description": " Change the status of the Fibre Channel port features.\n Use \"fcioportid\" only when the feature is port_state.\n Example: satask chfcportfeature -feature fdmi_discovery -enable yes"
+    }
+    "ibm_servicetask_ch_nodeip":{
+        "prefix":["ibm_servicetask, chnodeip"],
+        "body":[
+            "satask chnodeip -ip ${1:ipv4addr} -mask ${2:subnet_mask} -gw ${3:ipv4_gw} -port_id ${4:integer}"
+        ],
+        "description": " Set or clear the node IP on the specified node Ethernet port.\n Example: satask chnodeip -ip 9.7.8.1 -gw 9.0.0.1 -mask 255.255.255.0 -port_id 1\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_servicetask_ch_nodeusb":{
+        "prefix":["ibm_servicetask, chnodeusb"],
+        "body":[
+            "satask chnodeusb ${2|on,off|}"
+        ],
+        "description": " Enable or disable USB ports on the node.\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_servicetask_ch_serviceip":{
+        "prefix":["ibm_servicetask, chserviceip"],
+        "body":[
+            "satask chserviceip -serviceip ${1:ipv4addr} -mask ${2:subnet_mask} -gw ${3:ipv4_gw}"
+        ],
+        "description": " Set the service address for a specific node.\n Example: satask chnodeip -serviceip 9.7.8.1 -mask 255.255.255.0 -gw 9.0.0.1 \n There are a lot more parameters, but these are optional"
+    }
+    "ibm_servicetask_ch_vpd":{
+        "prefix":["ibm_servicetask, chvpd"],
+        "body":[
+            "satask chvpd -wwnn ${1:old_node_wwnn} -fcportmap ${2:physical_port_locations_list_or_legacy_port_mappings_list_or_standard_map_name}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Set vital product data (VPD) such as serial number and machine type\n Example: satask chvpd -wwnn 5005076801000456 -fcportmap default\n There are a lot more parameters, but these are optional"
+    }
+    "ibm_servicetask_leavecluster":{
+        "prefix":["ibm_servicetask, leavecluster"],
+        "body":[
+            "satask leavecluster -force ${1:panel_name_SN}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Remove system state data, location information, and other history from a node."
+    }
+    "ibm_servicetask_locksuperuser":{
+        "prefix":["ibm_servicetask, locksuperuser"],
+        "body":[
+            "satask locksuperuser"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Lock the superuser so that it cannot be used to log in to the system or perform service actions.\n The user of this task is limited to the IBM® Remote Support user."
+    }
+    "ibm_servicetask_unlocksuperuser":{
+        "prefix":["ibm_servicetask, unlocksuperuser"],
+        "body":[
+            "satask unlocksuperuser"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Unlock the superuser so that it can be used to log in to the system or perform service actions."
+    }
+    "ibm_servicetask_mk_cluster":{
+        "prefix":["ibm_servicetask, mkcluster"],
+        "body":[
+            "satask mkcluster -clusterip ${1:ipv4addr} -mask ${2:subnet_mask} -gw ${3:ipv4_gw} -name ${4:cluster_name}"
+        ],
+        "description": " Create a new system\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_servicetask_rescuenode":{
+        "prefix":["ibm_servicetask, rescuenode"],
+        "body":[
+            "satask rescuenode -force ${1:panel_name_SN}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Start automatic recovery for a specific node. Use this command only when the node reports corrupted code.\n Exampple: satask rescuenode -force 112233"
+    }
+    "ibm_servicetask_resetpassword":{
+        "prefix":["ibm_servicetask, resetpassword"],
+        "body":[
+            "satask resetpassword -password ${1:cleartext_password}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Reset the system superuser password to a user-defined value.\n Exampple: satask resetpassword -password 'new_password'"
+    }
+    "ibm_servicetask_set_tempsshkey":{
+        "prefix":["ibm_servicetask, settempsshkey"],
+        "body":[
+            "satask settempsshkey -keyfile ${1:path_with_filename} ${2:panel_name}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Install a temporary Secure Shell (SSH) key for a superuser ID to run commands in the service assistant CLI.\n Exampple: satask settempsshkey -keyfile jvardy12 112233"
+    }
+    "ibm_servicetask_snap":{
+        "prefix":["ibm_servicetask, snap"],
+        "body":[
+            "satask snap"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_servicetask_startservice":{
+        "prefix":["ibm_servicetask, startservice"],
+        "body":[
+            "satask startservice ${1:panel_name_SN}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Enter a service state\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_servicetask_stopservice":{
+        "prefix":["ibm_servicetask, stopservice"],
+        "body":[
+            "satask stopservice ${1:panel_name_SN}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Exit a service state\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_servicetask_stopnode":{
+        "prefix":["ibm_servicetask, stopnode"],
+        "body":[
+            "satask stopnode ${1|-warmstart,-reboot,-poweroff|} ${2:panel_name_SN}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Power off, reboot, or warmstart a node\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_servicetask_t3recovery":{
+        "prefix":["ibm_servicetask, t3recovery"],
+        "body":[
+            "satask t3recovery ${1|-prepare,-execute|} ${2:panel_name_SN}"
+        ],
+        "description": " IMPORTANT: Please read first on the IBM homepage how to use these command.\n Prepare and start a T3 recovery"
+    }
+    //Snapshot commands
+    "ibm_snapshot_add_snapshot":{
+        "prefix":["ibm_snapshot, addsnapshot"],
+        "body":[
+            "addsnapshot -name ${1:snap_name} ${2|-volumegroup,-volumes|} ${3:volumegroup_id_or_name/list_of_volume_ids_or_names}"
+        ],
+        "description": " Save a version of a set of volumes\n Example: addsnapshot -name noon_snapshot -volumegroup volumegroup12\n Example: addsnapshot -name vol_snapshot -volumes volume0:volume1:volume2:volume3\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_snapshot_ch_snapshot":{
+        "prefix":["ibm_snapshot, chsnapshot"],
+        "body":[
+            "chsnapshot -name ${1:new_snap_name} -snapshot ${2:old_snap_name} -volumegroup ${3:volumegroup_id_or_name}"
+        ],
+        "description": " Change the name or the ownership group of an existing snapshot\n Example: chsnapshot -name midday -snapshot noon -volumegroup volumegroup12\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_snapshot_ch_systemlimits":{
+        "prefix":["ibm_snapshot, chsystemlimits"],
+        "body":[
+            "chsystemlimits -limit ${1:limit_name} -threshold ${2:number_remaining_objects}"
+        ],
+        "description": " Modify the warning threshold for a particular object\n Example: chsystemlimits -limit volume_copies -threshold 1000\n For name of the limit use \"lssystemlimits\" befor"
+    }
+    "ibm_snapshot_list_systemlimits":{
+        "prefix":["ibm_snapshot, lssystemlimits"],
+        "body":[
+            "lssystemlimits"
+        ],
+        "description": " Display a list of object consumption and limits for the system"
+    }
+    "ibm_snapshot_list_volumegroupsnapshot":{
+        "prefix":["ibm_snapshot, lsvolumegroupsnapshot"],
+        "body":[
+            "lsvolumegroupsnapshot"
+        ],
+        "description": " List a view snapshot objects in the system.\n Example: lsvolumegroupsnapshot (ID)"
+    }
+    "ibm_snapshot_list_volumesnapshot":{
+        "prefix":["ibm_snapshot, lsvolumesnapshot"],
+        "body":[
+            "lsvolumesnapshot"
+        ],
+        "description": " Display a list of all volume snapshots\n Example: lsvolumesnapshot (ID) -showhidden"
+    }
+    "ibm_snapshot_rm_snapshot":{
+        "prefix":["ibm_snapshot, rmsnapshot"],
+        "body":[
+            "rmsnapshot -snapshot ${1:snap_name} -volumegroup ${2:volumegroup_id_or_name}"
+        ],
+        "description": " Remove the snapshot specified either by the snapshot name and the volume group or by the snapshot name and snapshot ID.\n Example: rmsnapshot -snapshot noon -volumegroup volumegroup12\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_snapshot_list_volumegrouppopulation":{
+        "prefix":["ibm_snapshot, lsvolumegrouppopulation"],
+        "body":[
+            "lsvolumegrouppopulation"
+        ],
+        "description": " List the volume group population information. This view includes volume groups of type clone or thinclone.\n Example: lsvolumegrouppopulation (ID)"
+    }
+    "ibm_snapshot_list_volumegrouppopulation":{
+        "prefix":["ibm_snapshot, lsvolumegrouppopulation"],
+        "body":[
+            "lsvolumegrouppopulation"
+        ],
+        "description": " List the volume group population information. This view includes volume groups of type clone or thinclone.\n Example: lsvolumegrouppopulation (ID)"
+    }
+    //Snapshot policy commands
+    "ibm_snapshotpolicy_ch_snapshotpolicy":{
+        "prefix":["ibm_snapshotpolicy, chsnapshotpolicy"],
+        "body":[
+            "chsnapshotpolicy -name ${1:new_snapshot_policy_name} ${2:snapshot_policy_name_or_id}"
+        ],
+        "description": " Change an existing snapshot policy\n Example: chsnapshotpolicy -name mysgpolicy3 3"
+    }
+    "ibm_snapshotpolicy_ch_volumegroupsnapshotpolicy":{
+        "prefix":["ibm_snapshotpolicy, chvolumegroupsnapshotpolicy"],
+        "body":[
+            "chvolumegroupsnapshotpolicy -snapshotpolicysuspended ${1|yes,no|} ${2:volumegroup_id_or_name}"
+        ],
+        "description": " Change the volume group properties related to snapshot policies.\n Example: chvolumegroupsnapshotpolicy -snapshotpolicysuspended yes 0"
+    }
+    "ibm_snapshotpolicy_mk_snapshotpolicy":{
+        "prefix":["ibm_snapshotpolicy, mksnapshotpolicy"],
+        "body":[
+            "mksnapshotpolicy -name ${1:snapshot_policy_name} -backupunit ${2|minute,hour,day,week,month|} -backupinterval ${3:1-65535} -backupstarttime ${4:YYMMDDHHmm} -retentiondays ${5:num_days}"
+        ],
+        "description": " Create a new snapshot policy that can be associated with volume groups.\n Example: mksnapshotpolicy -name newsnappol -backupunit day -backupinterval 1 -backupstarttime 2102281800 -retentiondays 15"
+    }
+    "ibm_snapshotpolicy_rm_snapshotpolicy":{
+        "prefix":["ibm_snapshotpolicy, rmsnapshotpolicy"],
+        "body":[
+            "rmsnapshotpolicy ${1:snapshot_policy_name_or_id}"
+        ],
+        "description": " Remove an existing snapshot policy by ID or by name\n Example: rmsnapshotpolicy (ID)"
+    }
+    "ibm_snapshotpolicy_list_snapshotpolicy":{
+        "prefix":["ibm_snapshotpolicy, lssnapshotpolicy"],
+        "body":[
+            "lssnapshotpolicy"
+        ],
+        "description": " List the snapshot policies\n Example: lssnapshotpolicy (ID)"
+    }
+    "ibm_snapshotpolicy_list_snapshotschedule":{
+        "prefix":["ibm_snapshotpolicy, lssnapshotschedule"],
+        "body":[
+            "lssnapshotschedule"
+        ],
+        "description": " List the snapshot schedules\n Example: lssnapshotschedule -schedule 2 39\n A concise invocation example of detailed view of schedule 2 of snapshot policy 39"
+    }
+    "ibm_snapshotpolicy_list_vdiskgroupsnapshotpolicy":{
+        "prefix":["ibm_snapshotpolicy, lsvolumegroupsnapshotpolicy"],
+        "body":[
+            "lsvolumegroupsnapshotpolicy"
+        ],
+        "description": " List the snapshot policy attributes associated with a volume group.\n Example: lsvolumegroupsnapshotpolicy 2"
+    }
+    //Storage insights commands
+    "ibm_storageinsights_list_controllerports":{
+        "prefix":["ibm_storageinsights, lscontrollerports"],
+        "body":[
+            "lscontrollerports"
+        ],
+        "description": " List the controller port information for the IBM® Storage Insights"
+    }
+    "ibm_storageinsights_list_hostports":{
+        "prefix":["ibm_storageinsights, lshostports"],
+        "body":[
+            "lshostports"
+        ],
+        "description": " List the controller port information for the IBM Storage Insights"
+    }
+    "ibm_storageinsights_list_vdisktiers":{
+        "prefix":["ibm_storageinsights, lsvdisktiers"],
+        "body":[
+            "lsvdisktiers ${1:object_name_or_id}"
+        ],
+        "description": " List the volume tier capacities for the IBM Storage Insights"
+    }
+    //Storage pool commands
+    "ibm_pool_ch_mdiskgrp":{
+        "prefix":["ibm_pool, chmdiskgrp"],
+        "body":[
+            "chmdiskgrp -name ${1:new_pool_name} ${2:mdisk_group_name_or_id}"
+        ],
+        "description": " Modify properties of an existing storage pool\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_pool_ch_mdiskgrp_vdiskprotection":{
+        "prefix":["ibm_pool, chmdiskgrp_vdiskprotection"],
+        "body":[
+            "chmdiskgrp -vdiskprotectionenabled ${1|yes,no|} ${2:mdisk_group_name_or_id}"
+        ],
+        "description": " Specifies whether volume protection in enabled for this storage pool\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_pool_list_freeextents":{
+        "prefix":["ibm_pool, lsfreeextents"],
+        "body":[
+            "lsfreeextents ${1:mdisk_group_name_or_id}"
+        ],
+        "description": " List the number of free extents that are available on a specified MDisk."
+    }
+    "ibm_pool_list_mdiskgrp":{
+        "prefix":["ibm_pool, lsmdiskgrp"],
+        "body":[
+            "lsmdiskgrp"
+        ],
+        "description": " Display a concise list or a detailed view of storage pools that are visible to the system.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_pool_mk_mdiskgrp":{
+        "prefix":["ibm_pool, mkmdiskgrp"],
+        "body":[
+            "mkmdiskgrp -name ${1:pool_name} -mdisk ${2:mdisk_group_name_or_id_list} -ext ${3|2048,4096,8192|} -vdiskprotectionenabled ${4|yes,no|}"
+        ],
+        "description": " Create a new storage pool\n Example: mkmdiskgrp -name newpool -mdisk 8:9:10 -ext 2048 -vdiskprotectionenabled yes\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_pool_rm_mdisk":{
+        "prefix":["ibm_pool, rmmdisk"],
+        "body":[
+            "rmmdisk -mdisk ${1:mdisk_group_name_or_id_list} ${2:mdisk_group_name_or_id}"
+        ],
+        "description": " Delete a managed disk (MDisk) from a storage pool\n Example: rmmdisk -mdisk mdisk8 pool_test\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_pool_rm_mdiskgrp":{
+        "prefix":["ibm_pool, rmmdiskgrp"],
+        "body":[
+            "rmmdiskgrp ${1:mdisk_group_name_or_id_list}"
+        ],
+        "description": " Delete a storage pool without being able to recover it\n Example: rmmdiskgrp pool_test\n There are a lot more parameters, but these are optional."
+    }
+    //Two person integrity commands
+    "ibm_twoperson_ch_twopersonintegrity_approve":{
+        "prefix":["ibm_twoperson, chtwopersonintegrityrequest_approve"],
+        "body":[
+            "svctask chtwopersonintegrityrequest -approve -minutesapproved ${1:minutes} -username ${2:user_name}"
+        ],
+        "description": " Approve an existing role elevation request.\n You must have the Restricted Security Administrator role or the Security Administrator role to use this command.\n Example: chtwopersonintegrityrequest -approve -minutesapproved 30 -username secadmin11\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_twoperson_ch_twopersonintegrity_cancel":{
+        "prefix":["ibm_twoperson, chtwopersonintegrityrequest_cancel"],
+        "body":[
+            "svctask chtwopersonintegrityrequest -cancel -username ${1:user_name}"
+        ],
+        "description": " Cancel an existing role elevation request.\n You must have the Restricted Security Administrator role or the Security Administrator role to use this command.\n Example: chtwopersonintegrityrequest -cancel -username secadmin11\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_twoperson_mk_twopersonintegrity":{
+        "prefix":["ibm_twoperson, mktwopersonintegrityrequest"],
+        "body":[
+            "svctask mktwopersonintegrityrequest -minutesrequested ${1:minutes}"
+        ],
+        "description": " Request a role elevation for yourself. This command requests on behalf of the current user invoking this command.\n Example: mktwopersonintegrityrequest -minutesrequested 45"
+    }
+    //User management and access control commands
+    "ibm_user_mgmt_ch_currentuser_pw":{
+        "prefix":["ibm_user_mgmt, chcurrentuser_pw"],
+        "body":[
+            "chcurrentuser -password ${1:cleartext_password}"
+        ],
+        "description": " Change the attributes of the current user."
+    }
+    "ibm_user_mgmt_ch_currentuser_keyfile":{
+        "prefix":["ibm_user_mgmt, chcurrentuser_keyfile"],
+        "body":[
+            "chcurrentuser -keyfile ${1:sshkey_filename}"
+        ],
+        "description": " Change the attributes of the current user."
+    }
+    "ibm_user_mgmt_ch_ownershipgroup":{
+        "prefix":["ibm_user_mgmt, chownershipgroup"],
+        "body":[
+            "svctask chownershipgroup -name ${1:name_for_ownershipgrp} ${2:ownershipgrp_name_or_id}"
+        ],
+        "description": " Change the attributes of the current user.\n Example: svctask chownershipgroup -name mynewgrpname myoldgrpname\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_user_mgmt_ch_user":{
+        "prefix":["ibm_user_mgmt, chuser"],
+        "body":[
+            "chuser -password ${1:cleartext_password} ${2:user_name_or_id}"
+        ],
+        "description": " Change the attributes of the current user.\n Example: chuser -password passyw 0\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_user_mgmt_ch_user":{
+        "prefix":["ibm_user_mgmt, chusergrp"],
+        "body":[
+            "chusergrp -remote ${1|no,yes|} -passwordkeyrequired ${2|no,yes|} -disablegui ${3|no,yes|} -disablecli ${4|no,yes|} -disablerest ${5|no,yes|} ${6:grp_name_or_id}"
+        ],
+        "description": " Change the attributes of an existing user group\n Example: chusergrp -remote no -passwordkeyrequired no -disablegui yes -disablecli no -disablerest yes 6\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_user_mgmt_list_currentuser":{
+        "prefix":["ibm_user_mgmt, lscurrentuser"],
+        "body":[
+            "lscurrentuser"
+        ],
+        "description": " Display information for the logged-in user"
+    }
+    "ibm_user_mgmt_list_ownershipgroup":{
+        "prefix":["ibm_user_mgmt, lsownershipgroup"],
+        "body":[
+            "svcinfo lsownershipgroup"
+        ],
+        "description": " Display the ownership groups that are available in the system"
+    }
+    "ibm_user_mgmt_list_user":{
+        "prefix":["ibm_user_mgmt, lsuser"],
+        "body":[
+            "svcinfo lsuser"
+        ],
+        "description": " Display a list of the users that are created on the system"
+    }
+    "ibm_user_mgmt_list_usergrp":{
+        "prefix":["ibm_user_mgmt, lsusergrp"],
+        "body":[
+            "svcinfo lsusergrp"
+        ],
+        "description": " Display a list of the users groups that are created on the system"
+    }
+    "ibm_user_mgmt_mk_ownershipgroup":{
+        "prefix":["ibm_user_mgmt, lsusergrp"],
+        "body":[
+            "svctask mkownershipgroup -name ${1:grp_name}"
+        ],
+        "description": " Creates an ownership group."
+    }
+    "ibm_user_mgmt_mk_user":{
+        "prefix":["ibm_user_mgmt, mkuser"],
+        "body":[
+            "svctask mkuser -name ${1:user_name} -usergrp ${2:usergrp_name_or_id} -password ${3:cleartext_password}"
+        ],
+        "description": " Creates either a local or a remote user to access a system\n Example: mkuser -name jane -usergrp Service -password secret\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_user_mgmt_mk_usergrp":{
+        "prefix":["ibm_user_mgmt, mkusergrp"],
+        "body":[
+            "svctask mkusergrp -name ${1:user_name} -role ${2:role_name_or_id} -remote ${3|no,yes|} -passwordkeyrequired ${4|no,yes|} -disablegui ${5|no,yes|} -disablecli ${6|no,yes|} -disablerest ${7|no,yes|}"
+        ],
+        "description": " Creates a new user group\n Example: mkusergrp -name support -role Service -remote no -passwordkeyrequired no -disablegui yes -disablecli no -disablerest yes\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_user_mgmt_rm_ownershipgroup":{
+        "prefix":["ibm_user_mgmt, rmownershipgroup"],
+        "body":[
+            "svctask rmownershipgroup ${1:grp_name_or_id}"
+        ],
+        "description": " Deletes an ownership group."
+    }
+    "ibm_user_mgmt_rm_user":{
+        "prefix":["ibm_user_mgmt, rmuser"],
+        "body":[
+            "svctask rmuser ${1:user_name_or_id}"
+        ],
+        "description": " Deletes a user."
+    }
+    "ibm_user_mgmt_rm_usergrp":{
+        "prefix":["ibm_user_mgmt, rmusergrp"],
+        "body":[
+            "svctask rmusergrp ${1:grp_name_or_id}"
+        ],
+        "description": " Deletes a new user group."
+    }
+    //Volume commands
+    "ibm_vdisk_mgmt_add_volumecopy":{
+        "prefix":["ibm_vdisk_mgmt, addvolumecopy"],
+        "body":[
+            "addvolumecopy -pool ${1:storage_pool_name_or_id} ${2:volume_name_or_id}"
+        ],
+        "description": " Add a volume copy to an existing volume.\n Example: addvolumecopy -pool 2 volume5\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_add_vdiskcopy":{
+        "prefix":["ibm_vdisk_mgmt, addvdiskcopy"],
+        "body":[
+            "addvdiskcopy -mdiskgrp ${1:storage_pool_name_or_id} ${2:volume_name_or_id}"
+        ],
+        "description": " Add a copy to an existing volume.\n Example: addvdiskcopy -mdiskgrp 0 vdisk8\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_add_vdiskaccess":{
+        "prefix":["ibm_vdisk_mgmt, addvdiskaccess"],
+        "body":[
+            "addvdiskaccess -iogrp ${1:iogrp_id_or_name_list} ${2:volume_name_or_id}"
+        ],
+        "description": " Add one or more I/O groups to the set of I/O groups in which a volume can be made accessible to hosts.\n Example: addvdiskaccess -iogrp 2 DB_Volume01\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_lsit_vdiskaccess":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskaccess"],
+        "body":[
+            "lsvdiskaccess"
+        ],
+        "description": " Display a list of all input/output (I/O) groups in the volume access set.\n Example: lsvdiskaccess DB_Volume01\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_analyzevdisk":{
+        "prefix":["ibm_vdisk_mgmt, analyzevdisk"],
+        "body":[
+            "analyzevdisk ${1:volume_name_or_id}"
+        ],
+        "description": " Queue or cancel volume analysis\n Example: analyzevdisk DB_Volume01\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskanalysis":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskanalysis"],
+        "body":[
+            "lsvdiskanalysis"
+        ],
+        "description": " Display information for thin provisioning and compression estimation analysis report for a single volume or multiple volumes.\n Example: lsvdiskanalysis DB_Volume01\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskcopy":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskcopy"],
+        "body":[
+            "lsvdiskcopy"
+        ],
+        "description": " List volume copy information\n Example: lsvdiskcopy -copy 0 volume01\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskextent":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskextent"],
+        "body":[
+            "lsvdiskextent"
+        ],
+        "description": " List the MDisk extents that are provided for the specified volumes\n Example: lsvdiskextent volume01\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskfcmapcopies":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskfcmapcopies"],
+        "body":[
+            "lsvdiskfcmapcopies ${1:volume_name_or_id}"
+        ],
+        "description": " Display a list of all FlashCopy mappings with a target volume that contains a valid copy of the specified volume.\n Example: lsvdiskfcmapcopies 1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskfcmappings":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskfcmappings"],
+        "body":[
+            "lsvdiskfcmappings ${1:volume_name_or_id}"
+        ],
+        "description": " Display a list of FlashCopy® mappings to which the volume belongs.\n A volume can be part of up to 256 FlashCopy mappings.\n Example: lsvdiskfcmappings 1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskhostmap":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskhostmap"],
+        "body":[
+            "lsvdiskhostmap ${1:volume_name_or_id}"
+        ],
+        "description": " List the hosts to which a volume is mapped\n Example: lsvdiskhostmap 1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskmember":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskmember"],
+        "body":[
+            "lsvdiskmember ${1:volume_name_or_id}"
+        ],
+        "description": " Display a list of MDisks that are members of the specified volume.\n Example: lsvdiskmember 1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdisksyncprogress":{
+        "prefix":["ibm_vdisk_mgmt, lsvdisksyncprogress"],
+        "body":[
+            "lsvdisksyncprogress"
+        ],
+        "description": " Display the progress of volume copy synchronization\n Example: lsvdisksyncprogress 1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_volumebackup":{
+        "prefix":["ibm_vdisk_mgmt, lsvolumebackup"],
+        "body":[
+            "lsvolumebackup"
+        ],
+        "description": " List the volumes that have cloud snapshot that enabled and volumes that have cloud snapshots in the cloud account.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_volumebackupgeneration":{
+        "prefix":["ibm_vdisk_mgmt, lsvolumebackupgeneration"],
+        "body":[
+            "lsvolumebackupgeneration -volume ${1:volume_name_or_id}"
+        ],
+        "description": " List any volume snapshots available on the specified volume.\n Example: lsvolumebackupgeneration -volume 1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_rm_volumebackupgeneration":{
+        "prefix":["ibm_vdisk_mgmt, rmvolumebackupgeneration"],
+        "body":[
+            "rmvolumebackupgeneration -volume ${1:volume_name_or_id} -generation ${2:gen_id_or_all}"
+        ],
+        "description": " Delete a volume backup or cancel a volume snapshot operation that is in progress.\n Example: rmvolumebackupgeneration -volume vdisk7 -generation 5"
+    }
+    "ibm_vdisk_mgmt_list_volumebackupprogress":{
+        "prefix":["ibm_vdisk_mgmt, lsvolumebackupprogress"],
+        "body":[
+            "lsvolumebackupprogress"
+        ],
+        "description": " Display information about the progress of snapshot operations.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskprogress":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskprogress"],
+        "body":[
+            "lsvdiskprogress ${1:volume_name_or_id}"
+        ],
+        "description": " Track the progress during new volume formatting\n Example: lsvdiskprogress 1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskdependentmaps":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskdependentmaps"],
+        "body":[
+            "lsvdiskdependentmaps"
+        ],
+        "description": " Display all FlashCopy mappings with target volumes that are dependent upon data that is held on the specified volume.\n Example: lsvdiskdependentmaps volume01\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdiskanalysisprogress":{
+        "prefix":["ibm_vdisk_mgmt, lsvdiskanalysisprogress"],
+        "body":[
+            "lsvdiskanalysisprogress"
+        ],
+        "description": " Display information about the space analysis progress for an entire system."
+    }
+    "ibm_vdisk_mgmt_analyzevdiskbysystem":{
+        "prefix":["ibm_vdisk_mgmt, analyzevdiskbysystem"],
+        "body":[
+            "analyzevdiskbysystem"
+        ],
+        "description": " Schedule all existing volumes in system for available capacity analysis."
+    }
+    "ibm_vdisk_mgmt_backupvolume":{
+        "prefix":["ibm_vdisk_mgmt, backupvolume"],
+        "body":[
+            "backupvolume ${1:volume_name_or_id}"
+        ],
+        "description": " Create a volume snapshot\n Example: backupvolume prodvol01 \n An invocation example for creating a backup of a volume for the first time"
+    }
+    "ibm_vdisk_mgmt_backupvolumegroup":{
+        "prefix":["ibm_vdisk_mgmt, backupvolumegroup"],
+        "body":[
+            "backupvolumegroup ${1:volumegrp_name_or_id}"
+        ],
+        "description": " Create a new snapshot for all of the volumes in a volume group.\n Example: backupvolume volgroup1\n To create a backup of a volume group for the first time"
+    }
+    "ibm_vdisk_mgmt_list_volumegroup":{
+        "prefix":["ibm_vdisk_mgmt, lsvolumegroup"],
+        "body":[
+            "lsvolumegroup"
+        ],
+        "description": " Display information about configured volume groups\n Example: lsvolumegroup volgroup1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_volumerestoreprogress":{
+        "prefix":["ibm_vdisk_mgmt, lsvolumerestoreprogress"],
+        "body":[
+            "lsvolumerestoreprogress"
+        ],
+        "description": " Display information about restore operation progress.\n Example: lsvolumerestoreprogress volgroup1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_ch_vdisk":{
+        "prefix":["ibm_vdisk_mgmt, chvdisk"],
+        "body":[
+            "chvdisk -name ${1:new_name} ${2:volume_name_or_id}"
+        ],
+        "description": " Modify the properties of a volume, such as the disk name, I/O governing rate, or unit number. \n Example: chvdisk -volumegroup 1 vdisk2\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_ch_volumegroup":{
+        "prefix":["ibm_vdisk_mgmt, chvolumegroup"],
+        "body":[
+            "chvolumegroup -name ${1:new_volumegrp_name} ${2:old_volumegrp_name}"
+        ],
+        "description": " Modify the properties of a volume, such as the disk name, I/O governing rate, or unit number. \n Example: chvolumegroup -snapshotpolicy (ID) -safeguarded -policystarttime YYMMDDHHmm 0\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_expandvolume":{
+        "prefix":["ibm_vdisk_mgmt, expandvolume"],
+        "body":[
+            "expandvolume -size ${1:disk_siz} -unit ${2|b,kb,mb,gb,tb,pb|} ${4:volume_name_or_id}"
+        ],
+        "description": " Expand the size of a HyperSwap volume by a specified capacity.\n Example: expandvolume -size 1000 -unit mb vdisk1"
+    }
+    "ibm_vdisk_mgmt_expandvdisksize":{
+        "prefix":["ibm_vdisk_mgmt, expandvdisksize"],
+        "body":[
+            "expandvdisksize -size ${1:disk_siz} -unit ${2|b,kb,mb,gb,tb,pb|} -mdisk ${3:mdisk_name_or_id_list} ${4:volume_name_or_id}"
+        ],
+        "description": " Expand the provisioned capacity of a volume by a specified amount, not a HyperSwap vdisk.\n Example: expandvdisksize -size 1000 -unit mb -mdisk mdisk0:mdisk1 vdisk1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_shrinkvdisksize":{
+        "prefix":["ibm_vdisk_mgmt, shrinkvdisksize"],
+        "body":[
+            "shrinkvdisksize -size ${1:disk_siz} -unit ${2|b,kb,mb,gb,tb,pb|} ${3:volume_name_or_id}"
+        ],
+        "description": " Reduce the size of a volume by the specified capacity\n Example: shrinkvdisksize -size 2048 -unit b vdisk1\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_splitvdiskcopy":{
+        "prefix":["ibm_vdisk_mgmt, splitvdiskcopy"],
+        "body":[
+            "splitvdiskcopy -copy ${1:id} ${2:volume_name_or_id}"
+        ],
+        "description": " Create a separate volume from a synchronized copy of a mirrored volume.\n Example: splitvdiskcopy -copy 1 vdisk8\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_dependentvdisks":{
+        "prefix":["ibm_vdisk_mgmt, lsdependentvdisks"],
+        "body":[
+            "lsdependentvdisks"
+        ],
+        "description": " View which volumes go offline if you remove a specific piece of hardware from the system.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_hostvdiskmap":{
+        "prefix":["ibm_vdisk_mgmt, lshostvdiskmap"],
+        "body":[
+            "lshostvdiskmap"
+        ],
+        "description": " List of volumes that are mapped to a host. These volumes are the volumes that are recognized by the specified host.\n Example: lshostvdiskmap (host_id_or_name)\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_sevdiskcopy ":{
+        "prefix":["ibm_vdisk_mgmt, lssevdiskcopy "],
+        "body":[
+            "lssevdiskcopy "
+        ],
+        "description": " List the thin-provisioned copies of the specified volumes.\n Example: lssevdiskcopy (volume_id_or_name)\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_vdisk ":{
+        "prefix":["ibm_vdisk_mgmt, lsvdisk "],
+        "body":[
+            "lsvdisk "
+        ],
+        "description": " Display a concise list or a detailed view of volumes that are recognized by the system.\n Example: lsvdisk (volume_id_or_name)\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_mk_vdisk_tp":{
+        "prefix":["ibm_vdisk_mgmt, mkvdisk_tp"],
+        "body":[
+            "svctask mkvdisk -autoexpand -grainsize ${1|32,64,128,256|} -iogrp ${2:io_group_id_or_name} -mdiskgrp ${3:pool_or_mdiskgrp_name} -name ${4:new_name} -rsize ${5:disk_size_percentage} -size ${6:disk_size} -unit ${7|b,kb,mb,gb,tb,pb|} -warning ${8:disk_size_percentage}"
+        ],
+        "description": " Create sequential volume objects.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_mk_volume":{
+        "prefix":["ibm_vdisk_mgmt, mkvolume"],
+        "body":[
+            "svctask mkvolume -name ${1:new_name} -size ${2:disk_size} -unit ${3|b,kb,mb,gb,tb,pb|} -mdiskgrp ${4:pool_or_mdiskgrp_name} -iogrp ${5:io_group_id_or_name} -volumegroup ${6:volumegroup_id_or_name}"
+        ],
+        "description": " Create an empty volume from existing storage pools\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_mk_volumegroup":{
+        "prefix":["ibm_vdisk_mgmt, mkvolumegroup"],
+        "body":[
+            "mkvolmkvolumegroupume -name ${1:new_name}"
+        ],
+        "description": " Create and configure a new volume group.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_rm_volumegroup":{
+        "prefix":["ibm_vdisk_mgmt, rmvolumegroup"],
+        "body":[
+            "rmvolumegroup ${1:volumegroup_id_or_name}"
+        ],
+        "description": " Remove a volume group from a system."
+    }
+    "ibm_vdisk_mgmt_movevdisk":{
+        "prefix":["ibm_vdisk_mgmt, movevdisk"],
+        "body":[
+            "movevdisk -iogrp ${1:io_group_id_or_name} ${2:volume_name_or_id}"
+        ],
+        "description": " Move the preferred node of a volume either within the same caching I/O group or to another caching I/O group.\n Example: movevdisk -iogrp 2 DB_Volume\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_rm_vdisk":{
+        "prefix":["ibm_vdisk_mgmt, rmvdisk"],
+        "body":[
+            "rmvdisk ${1:volume_name_or_id}"
+        ],
+        "description": " Delete a volume. You cannot use this command for HyperSwap volumes and volumes that are used in policy-based replication\n Example: rmvdisk 0\n Example: rmvdisk -removehostmappings vdisk3"
+    }
+    "ibm_vdisk_mgmt_rm_volume":{
+        "prefix":["ibm_vdisk_mgmt, rmvolume"],
+        "body":[
+            "rmvolume ${1:volume_name_or_id}"
+        ],
+        "description": " Remove a volume\n Example: rmvolume 0\n Example: rmvolume -removercrelationships vdisk3\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_rm_vdiskcopy":{
+        "prefix":["ibm_vdisk_mgmt, rmvdiskcopy"],
+        "body":[
+            "rmvdiskcopy -copy ${1:copy_id} ${2:volume_name_or_id}"
+        ],
+        "description": " Remove a volume copy from a mirrored volume. Use the rmvolumecopy command for high availability volumes.\n Example: rmvdiskcopy -copy 1 vdisk8"
+    }
+    "ibm_vdisk_mgmt_rm_volumecopy":{
+        "prefix":["ibm_vdisk_mgmt, rmvolumecopy"],
+        "body":[
+            "rmvolumecopy -site ${1:site_id_or_name} ${2:volume_name_or_id}"
+        ],
+        "description": " Remove a volume copy with FlashCopy mappings show Example\n Example: rmvolumecopy -site 1 -removefcmaps vdisk8\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_rm_vdiskaccess":{
+        "prefix":["ibm_vdisk_mgmt, rmvdiskaccess"],
+        "body":[
+            "rmvdiskaccess -iogrp ${1:io_group_id_or_name} ${2:volume_name_or_id}"
+        ],
+        "description": " Delete one or more I/O groups from the set of I/O groups in which a volume can be made accessible to hosts.\n Example: rmvdiskaccess -iogrp 2 vdisk01"
+    }
+    "ibm_vdisk_mgmt_rm_vdiskhostmap":{
+        "prefix":["ibm_vdisk_mgmt, rmvdiskhostmap"],
+        "body":[
+            "rmvdiskhostmap -host ${1:host_id_or_name} ${2:volume_name_or_id}"
+        ],
+        "description": " Delete an existing host mapping the volume is no longer accessible for input/output (I/O) transactions on the given host.\n Example: rmvdiskhostmap -host 2 vdisk01"
+    }
+    "ibm_vdisk_mgmt_recovervdisk":{
+        "prefix":["ibm_vdisk_mgmt, recovervdisk"],
+        "body":[
+            "recovervdisk ${1:volume_name_or_id}"
+        ],
+        "description": " Acknowledge volume data loss and brings the volume back online.\n Example: recovervdisk 0\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_recovervdiskbyiogrp":{
+        "prefix":["ibm_vdisk_mgmt, recovervdiskbyiogrp"],
+        "body":[
+            "recovervdiskbyiogrp ${2:iogrp_name_or_id}"
+        ],
+        "description": " Acknowledge data loss for all volumes in the specified I/O group with a fast_write_state of corrupt and brings the volumes back online.\n Example: recovervdiskbyiogrp iogrp2"
+    }
+    "ibm_vdisk_mgmt_recovervdiskbysystem":{
+        "prefix":["ibm_vdisk_mgmt, recovervdiskbysystem"],
+        "body":[
+            "recovervdiskbysystem"
+        ],
+        "description": " Acknowledge data loss for all volumes in the system with a fast_write_state of corrupt and bring the volumes back online."
+    }
+    "ibm_vdisk_mgmt_repairsevdiskcopy":{
+        "prefix":["ibm_vdisk_mgmt, repairsevdiskcopy"],
+        "body":[
+            "repairsevdiskcopy ${1:volume_name_or_id}"
+        ],
+        "description": " Repairs the metadata on a thin-provisioned volume copy or a compressed volume copy."
+    }
+    "ibm_vdisk_mgmt_repairvdiskcopy":{
+        "prefix":["ibm_vdisk_mgmt, repairvdiskcopy"],
+        "body":[
+            "repairvdiskcopy ${1|-medium,-resync,-validate|} ${2:volume_name_or_id}"
+        ],
+        "description": " Mirrored volumes to detect and (optionally) correct any volume copies that are not identical."
+    }
+    "ibm_vdisk_mgmt_restorevolume":{
+        "prefix":["ibm_vdisk_mgmt, restorevolume"],
+        "body":[
+            "restorevolume -generation ${1:gen_id} ${2:volume_name_or_id}"
+        ],
+        "description": " Restore a volume from a snapshot generation.\n Example: restorevolume -generation 5 volume7"
+    }
+    "ibm_vdisk_mgmt_mk_vdisk":{
+        "prefix":["ibm_vdisk_mgmt, mkvdisk_gen"],
+        "body":[
+            "svctask mkvdisk -iogrp ${2:io_group_id_or_name} -mdiskgrp ${3:pool_or_mdiskgrp_name} -name ${4:new_name} -size ${6:disk_size} -unit ${7|b,kb,mb,gb,tb,pb|}"
+        ],
+        "description": " Create striped volume objects.\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_mk_vdiskhostmap":{
+        "prefix":["ibm_vdisk_mgmt, mkvdiskhostmap"],
+        "body":[
+            "svctask mkvdiskhostmap -host ${2:host_id_or_name} -allowmismatchedscsiids ${4:volume_name_or_id}"
+        ],
+        "description": " Create a new mapping between a volume and a host.\n Example: mkvdiskhostmap -host host1 -allowmismatchedscsiids 5\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_sevdiskcopy ":{
+        "prefix":["ibm_vdisk_mgmt, lssevdiskcopy "],
+        "body":[
+            "lssevdiskcopy"
+        ],
+        "description": " List the thin-provisioned copies of the specified volumes.\n Example: lssevdiskcopy (volume_id_or_name)\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_repairvdiskcopyprogress":{
+        "prefix":["ibm_vdisk_mgmt, lsrepairvdiskcopyprogress"],
+        "body":[
+            "lsrepairvdiskcopyprogress"
+        ],
+        "description": " Display the progress of volume repairs and validations\n Example: lsrepairvdiskcopyprogress (volume_id_or_name)\n There are a lot more parameters, but these are optional."
+    }
+    "ibm_vdisk_mgmt_list_repairsevdiskcopyprogress":{
+        "prefix":["ibm_vdisk_mgmt, lsrepairsevdiskcopyprogress"],
+        "body":[
+            "lsrepairsevdiskcopyprogress"
+        ],
+        "description": " Lists the repair progress for thin-provisioned volume copies or compressed volume copies.\n Example: lsrepairsevdiskcopyprogress (volume_id_or_name)\n There are a lot more parameters, but these are optional."
+    }
+    //System certificates commands
+    "ibm_system_certifi_list_rootcertificate":{
+        "prefix":["ibm_system_certifi, lsrootcertificate"],
+        "body":[
+            "satask lsrootcertificate"
+        ],
+        "description": " View the system's root certificate. The certificate can be copied into a trust store or into a file using"
+    }
+    "ibm_system_certifi_export_rootcertificate":{
+        "prefix":["ibm_system_certifi, exportrootcertificate"],
+        "body":[
+            "satask exportrootcertificate"
+        ],
+        "description": " Export the system's root certificate to /dumps/root_certificate.pem. The root certificate can be downloaded using scp and installed in web browsers and truststores."
+    }
+    //Policy-based replication commands
+    "ibm_policy_based_vdiskgrpreplication":{
+        "prefix":["ibm_policy_based, chvolumegroupreplication"],
+        "body":[
+            "chvolumegroupreplication -mode production ${1:vdisk_id_or_name}"
+        ],
+        "description": " IMPORTANT: PB is still new to the Spectrum Virtualize software, please read first on the IBM homepage how to use these commands.\n Change the replication properties of a volume group\n Example: chvolumegroupreplication -mode production 4"
+    }
+    "ibm_policy_based_list_vdiskgrpreplication":{
+        "prefix":["ibm_policy_based, lsvolumegroupreplication"],
+        "body":[
+            "lsvolumegroupreplication"
+        ],
+        "description": " IMPORTANT: PB is still new to the Spectrum Virtualize software, please read first on the IBM homepage how to use these commands.\n Display the replication information for the volume group\n Example: lsvolumegroupreplication (ID) //ID is Optional"
+    }
+    "ibm_policy_based_mk_replicationpolicy":{
+        "prefix":["ibm_policy_based, mkreplicationpolicy"],
+        "body":[
+            "mkreplicationpolicy -name ${1:replication_policy_name} -topology ${2:2-site-async-dr} -rpoalert ${3:60sec-86400sec} -location1system ${4:location1_system_name-or_id} -location1iogrp ${5:location1_iogrp_id} -location2system ${6:location2_system_name} -location2iogrp ${7:location2_iogrp_id}"
+        ],
+        "description": " IMPORTANT: PB is still new to the Spectrum Virtualize software, please read first on the IBM homepage how to use these commands.\n Create a replication policy\n Example: mkreplicationpolicy -name bath_bristol_dr -topology 2-site-async-dr -rpoalert 60 -location1system bath -location1iogrp 0 -location2system bristol -location2iogrp 0"
+    }
+    "ibm_policy_based_list_replicationpolicy":{
+        "prefix":["ibm_policy_based, lsreplicationpolicy"],
+        "body":[
+            "lsreplicationpolicy"
+        ],
+        "description": " IMPORTANT: PB is still new to the Spectrum Virtualize software, please read first on the IBM homepage how to use these commands.\n Display a list of all replication policies on the system\n Example: lsreplicationpolicy (ID) //ID is Optional"
+    }
+    "ibm_policy_based_rm_replicationpolicy":{
+        "prefix":["ibm_policy_based, rmreplicationpolicy"],
+        "body":[
+            "rmreplicationpolicy ${1:obj_id_name}"
+        ],
+        "description": " Delete a replication policy\n Example: rmreplicationpolicy 2"
+    }
+    /// Magic area ;)
+    "ibm_helper_firmwareupdate_nodes": {
+        "prefix": ["ibm_usefull_thing, firmware_install_cli"],
+        "body": [
+            "$LINE_COMMENT ATTENTION: this is one way to update the firmware of the storage systems, there are certainly other ways you can use, it just depends as always on your own skill."
+            "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
+            "$LINE_COMMENT First stepp is backup your Systems"
+            "$LINE_COMMENT ATTENTION: you do not necessarily need the superuser ,a user with normal admin privileges is sufficient"
+            "ssh ${1:authorized_user}@${2:ipaddress} svcconfig backup"
+            "\n$LINE_COMMENT Download the files to your System"
+            "pscp -unsafe ${1:authorized_user}@${2:ipaddress}:/dumps/svc.config.backup.* %USERPROFILE%\\Documents\\"
+            "\n$LINE_COMMENT Download the required software from IBM's Fix Central page by using the system type/model number and check with the help of the ibm firmware matrix if you can use it."
+            "$LINE_COMMENT Use PSCP or SCP to copy the file to the /home/admin/update/ directory on the Storage."
+            "$LINE_COMMENT Repeat the steps for each software package, Upgradetest; Drivefirmware and the Basicsoftware for Spectrum Virtualize"
+            "$LINE_COMMENT Type in the Password if needed"
+            "scp.exe ${3:filepath_and_name} ${1:authorized_user}@${2:ipaddress}:/home/admin/update/"
+            "\n$LINE_COMMENT Next install and run the Upgradetest/-software depent on the Firmwareleve you want to go."
+            "$LINE_COMMENT Exemplary process for SVC"
+            "ssh ${1:authorized_user}@${2:ipaddress} applysoftware -file ${4:filename_of_IBM_SVC_INSTALL_upgradetest}"
+            "\n$LINE_COMMENT CMMVC9001I The package installed successfully."
+            "ssh ${1:authorized_user}@${2:ipaddress} svcupgradetest -v 8.2.1.10"
+            "\n$LINE_COMMENT svcupgradetest version 30.21"
+            "$LINE_COMMENT Please wait, the test may take several minutes to complete."
+            "$LINE_COMMENT With Powershell, you may have to tap the Enter key after about 5 minutes for a result to appear."
+            "$LINE_COMMENT Results of running svcupgradetest:"
+            "$LINE_COMMENT It depends on the output whether you continue with the update or cancel it. If you are not sure, copy the message and cancel to gain time to ask questions."
+            "$LINE_COMMENT If no errors are found, continue as follows."
+            "ssh ${1:authorized_user}@${2:ipaddress} applysoftware -file ${5:filename_of_Spectrum Virtualize_Software}"
+            "\n$LINE_COMMENT The update process can take some time, you can monitor the progress with the following commands on the CLI."
+            "$LINE_COMMENT For Spectrum Virtualize Software"
+            "ssh ${1:authorized_user}@${2:ipaddress} lsupdate"
+            "$LINE_COMMENT or"
+            "ssh ${1:authorized_user}@${2:ipaddress} 'typeset -i i=0; while [ $i -lt 10 ] ; do lsupdate ; i=i+1 ;echo $i  ; sleep 30 ;done'"
+            "\n$LINE_COMMENT Now comes the time to wait until the update is complete."
+            "$LINE_COMMENT After the update, you should take another look at your entire environment and correct any errors that have occurred in connection with the update."
+        ],
+        "description": " This is an exemplary default basic procedure for update Spectrum Virtualize Software via cli."
+    }
+    "ibm_helper_firmwareupdate_drives": {
+        "prefix": ["ibm_usefull_thing, drivefirmware_install_cli"],
+        "body": [
+            "$LINE_COMMENT ATTENTION this is one way to update the firmware of the storage systems, there are certainly other ways you can use, it just depends as always on your own skill."
+            "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
+            "$LINE_COMMENT First stepp is backup your Systems"
+            "$LINE_COMMENT ATTENTION: you do not necessarily need the superuser ,a user with normal admin privileges is sufficient"
+            "ssh ${1:authorized_user}@${2:ipaddress} svcconfig backup"
+            "\n$LINE_COMMENT Download the files to your System"
+            "pscp -unsafe ${1:authorized_user}@${2:ipaddress}:/dumps/svc.config.backup.* ."
+            "\n$LINE_COMMENT Download the required software from IBM's Fix Central page by using the system type/model number and check with the help of the ibm firmware matrix if you can use it."
+            "$LINE_COMMENT Use PSCP or SCP to copy the file to the /home/admin/update/ directory on the Storage."
+            "$LINE_COMMENT Repeat the steps for each software package, Upgradetest; Drivefirmware"
+            "$LINE_COMMENT Type in the Password if needed"
+            "scp.exe ${3:filepath_and_name} ${1:authorized_user}@${2:ipaddress}:/home/admin/update/"
+            "\n$LINE_COMMENT Next install and run the Upgradetest/-software depent on the Firmwareleve you want to go."
+            "$LINE_COMMENT Exemplary process"
+            "$LINE_COMMENT Example: svcupgradetest -w IBM_FlashSystem9x00_NVME_DRIVE_ALL_220121"
+            "$LINE_COMMENT With Powershell, you may have to tap the Enter key after about 5 minutes for a result to appear."
+            "$LINE_COMMENT For Drive Firmware use:"
+            "ssh ${1:authorized_user}@${2:ipaddress} svctask applysoftware -file ${4:upgradetest}"
+            "ssh ${1:authorized_user}@${2:ipaddress} svcupgradetest -w ${5:drivemicrocodepackage}"
+            "\n$LINE_COMMENT Please wait, the test may take several minutes to complete"
+            "$LINE_COMMENT Results of running svcupgradetest:"
+            "$LINE_COMMENT It depends on the output whether you continue with the update or cancel it. If you are not sure, copy the message and cancel to gain time to ask questions."
+            "$LINE_COMMENT If no errors are found, continue as follows, for one drive... "
+            "ssh ${1:authorized_user}@${2:ipaddress} applydrivesoftware -file ${5:drivemicrocodepackage} -type firmware -drive 6"
+            "\n$LINE_COMMENT ... or for all drives. Info: Even if all drives have been selected, only one drive is updated at the same time"
+            "ssh ${1:authorized_user}@${2:ipaddress} applydrivesoftware -file ${5:drivemicrocodepackage} -type firmware -all"
+            "\n$LINE_COMMENT The update process can take some time, you can monitor the progress with the following commands on the CLI."
+            "$LINE_COMMENT For Driveupdates"
+            "ssh ${1:authorized_user}@${2:ipaddress} lsdriveupgradeprogress"
+            "$LINE_COMMENT or"
+            "ssh ${1:authorized_user}@${2:ipaddress} 'typeset -i i=0; while [ \\$i -lt 10 ] ; do lsdriveupgradeprogress ; i=i+1 ;echo \\$i  ; sleep 30 ;done'"
+            "\n$LINE_COMMENT Now comes the time to wait until the update is complete."
+            "$LINE_COMMENT After the update, you should take another look at your entire environment and correct any errors that have occurred in connection with the update."
+        ],
+        "description": " This is an exemplary default basic procedure for update drives via cli."
+    }
+    "ibm_helper_backup_system_configuration": {
+        "prefix": ["ibm_usefull_thing, backup_system_configuration_cli"],
+        "body": [
+            "$LINE_COMMENT ATTENTION this is one way to Backing up the system configuration, there are certainly other ways you can use, it just depends as always on your own skill."
+            "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
+            "$LINE_COMMENT ATTENTION: you do not necessarily need the superuser ,a user with normal admin privileges is sufficient"
+            "ssh ${1:authorized_user}@${2:ipaddress} svcconfig backup"
+            "\n$LINE_COMMENT Download the files to your System, you can of course customize the path for your system"
+            "pscp -unsafe ${1:authorized_user}@${2:ipaddress}:/dumps/svc.config.backup.* %USERPROFILE%\\Documents\\"
+            "\n$LINE_COMMENT done"
+        ],
+        "description": " This is an exemplary default basic procedure for backup system configuration via cli."
+    }
+    "ibm_helper_setup_basic_system_configuration": {
+        "prefix": ["ibm_usefull_thing, setup_basic_system_configuration"],
+        "body": [
+            "$LINE_COMMENT ATTENTION this is one way to setup up a new system configuration for storage/ svc device. There are certainly other ways you can use, it just depends as always on your own skill."
+            "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
+            "$LINE_COMMENT To initialize a new system, you must connect a notebook computer to the technician port on the rear of a node canister and run the initialization tool."
+            "$LINE_COMMENT The easiest way to initialize the system is via the WebGui, connect via the technician port to 192.168.0.1 and assign the ClusterIP in the wizard."
+            "$LINE_COMMENT Then plug the network cable into port 1 and wait for the cluster IP to come online, you can then do the rest via cli as described here."
+            "$LINE_COMMENT The other Way, access the command line by using the superuser credentials via technician port, Enter the following CLI command to create the system"
+            "$LINE_COMMENT Setup the ClusterIP"
+            "ssh superuser@192.168.0.1 svctask mkcluster -clusterip ${1:clusterip} -gw ${2:gw_ip} -mask ${2:subnetmask} -port 1"
+            "\n$LINE_COMMENT We use the superuser until the final completion of the setup with a simple password to make our work as easy as possible."
+            "$LINE_COMMENT At the end, the final users are created with their final passwords and security settings."
+            "\n$LINE_COMMENT Connect to the ClusterIP just set on Port1 of the/one node and setup the ServiceIPs"
+            "ssh superuser@${1:clusterip} satask chserviceip -gw ${2:gw_ip} -mask ${2:subnetmask} -serviceip ${4:serviceip} 01-1"
+    	    "ssh superuser@${1:clusterip}satask chserviceip -gw ${2:gw_ip} -mask ${2:subnetmask} -serviceip ${5:serviceip} 02-1"
+            "\n$LINE_COMMENT Unconfigures the IPv6 stack on the specified port, or both ports if none is specified"
+            "ssh superuser@${1:clusterip}svctask chclusterip -noip_6 -port 1"
+            "\n$LINE_COMMENT Set a Name to the node canister"
+            "ssh superuser@${1:clusterip}svctask chnodecanister -name ${6:ode_name} 1"		
+            "ssh superuser@${1:clusterip}svctask chnodecanister -name ${7:ode_name} 2"
+            "\n$LINE_COMMENT If you want/ plan to setup a mirror, change the layer to replication, if not skip this point."
+            "ssh superuser@${1:clusterip}svctask chsystem -layer replication"
+            "\n$LINE_COMMENT Set the timezoneif you want, for example to 360 for Europe/Berlin, if not skip this point."
+            "ssh superuser@${1:clusterip}svctask settimezone -timezone 360"
+            "\n$LINE_COMMENT Setup NTP-Server if there is one"
+            "ssh superuser@${1:clusterip}svctask chsystem -ntpip ${8:serviceip}"
+            "\n$LINE_COMMENT Setup DNS-Server if there is one"
+            "ssh superuser@${1:clusterip}svctask mkdnsserver -ip ${9:dnsserver_ip} -name ${10:DNS_name} 0"
+            "ssh superuser@${1:clusterip}svctask mkdnsserver -ip ${11:dnsserver_ip} -name ${12:DNS_name} 0"
+            "\n$LINE_COMMENT Configure IBM support assistance if you want, I usually disable it."
+            "ssh superuser@${1:clusterip}svctask chsra ${13|-enable,-disable|}"
+            "\n$LINE_COMMENT Basicsetup for call home"
+            "ssh superuser@${1:clusterip}svctask chsystem -censorcallhome ${14|on,off|} -enhancedcallhome ${14|on,off|} -invemailinterval ${15:0-15}"
+            "\n$LINE_COMMENT Setup Customer and more Infos, needed for call home"
+            "ssh superuser@${1:clusterip}svctask chemail -reply ${16:customer_email_address} -contact \"${17:contact_name}\" -primary \"${18:primary_telephone_number}\" -location \"${19:location}\" -organization ${20:organization} -address \"${21:address}\" -city \"${22:city}\" -state ${23:state} -zip ${24:zip} -country ${25:country}"
+            "\n$LINE_COMMENT Setup Call home preference"
+            "ssh superuser@${1:clusterip}svctask mkemailuser -address ${26:customer_email_address} -error ${27|on,off|} -info ${28|on,off|} -inventory ${29|on,off|} -warning ${30|on,off|}"
+            "ssh superuser@${1:clusterip}svctask mkemailuser -address callhome1@de.ibm.com -info ${31|on,off|} -inventory ${32|on,off|} -usertype support -warning ${33|on,off|}"
+            "\n$LINE_COMMENT Setup Mail Server and start them"
+            "ssh superuser@${1:clusterip}svctask mkemailserver -ip ${34:emailserverip} -port 25	0"
+            "ssh superuser@${1:clusterip}svctask startemail"
+            "\n$LINE_COMMENT Setup Mail Server and start them"
+            "\n$LINE_COMMENT This concludes the first part of the basic setup, you could add or exclude something here and there, but this procedure shows how it can work."
+            "$LINE_COMMENT The next part deals with creating users and advanced settings, creating draids, pools and so on."
+            "$LINE_COMMENT Creating/ Modif users prefix -> setup_user_configuration"
+        ],
+    }
+    "ibm_helper_setup_user_configuration": {
+        "prefix": ["ibm_usefull_thing, setup_user_configuration"],
+        "body": [
+            "$LINE_COMMENT ATTENTION this is one way to setup or modify up a new user storage/ svc device. There are certainly other ways you can use, it just depends as always on your own skill."
+            "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
+            "$LINE_COMMENT If you have not yet performed the basic setup and are facing a new machine, use the prefix: setup_basic_system_configuration to complete the basic setup."
+            "\n$LINE_COMMENT We use the superuser until the final completion of the setup with a simple password to make our work as easy as possible."
+            "$LINE_COMMENT At the end, the final users are created with their final passwords and security settings."
+            "\n$LINE_COMMENT Connect to the ClusterIP and create some useful user"
+            "$LINE_COMMENT In the first step, configure the password policy to be used globally by the system. Here in two steps for a better overview not all steps have to be used but it is recommended."
+            "ssh superuser@${1:clusterip} chsecurity -minpasswordlength ${1:6-64} -checkpasswordhistory ${2|yes,no|} -expirywarning ${3:0-30} -maxpasswordhistory ${4:0-365} -passwordexpiry ${5:0-365} -passworddigits ${6:0-3} -passwordlowercase ${7:0-3} -passwordspecialchars ${8:0-3} -passworduppercase ${9:0-3}"
+            "ssh superuser@${1:clusterip} chsecurity -clitimeout ${10:5-240} -guitimeout ${11:5-240} -maxfailedlogins ${12:0-10} -lockoutperiod ${13:10-120} -resetpolicy ${14|yes,no|} -restapitimeout ${15:10-120} -sslprotocol ${16:2-7} -sshprotocol ${17:1-3}"
+            "\n$LINE_COMMENT Create a monitoring user for storage insights or other monitoring tools, Usergroup 4 is the \"Monitor\" Grp."
+            "ssh superuser@${1:clusterip} svctask mkuser -name ${18:monitoring_user} -password #### -usergrp 4"
+            "\n$LINE_COMMENT If necessary or desired, a key can also be assigned to the user."
+            "ssh superuser@${1:clusterip} svctask chuser -keyfile ${19:keyname.pub} -name ${20:user_id_name}"
+            "\n$LINE_COMMENT Repeat the points for all users you need! My recommendation is to create at least one admin account in user group 1 (Administrator)."
+            "$LINE_COMMENT For System i it may be necessary to create a flashcopy user, this belongs in user group 2 (CopyOperator) see below."
+            "ssh superuser@${1:clusterip} svctask mkuser -name ${21:flashcopy_user} -keyfile ${21:keyname.pub} -usergrp 2"
+            "\n$LINE_COMMENT Finally, here are a few settings that affect the superuser, it should be made as unattractive as possible to use this user, from a security point of view. If you can't even lock it in the best case."
+            "$LINE_COMMENT If you want to block the superuser, there is still some preliminary work to be done, please read the IBM documentation."
+            "ssh superuser@${1:clusterip} chsecurity -disablesuperuserrest ${22|yes,no|} -disablesuperusergui ${23|yes,no|} -superusermultifactor ${24|yes,no|}"
+            "ssh superuser@${1:clusterip} chsecurity -superuserlocking ${25|enable,disable|}"
+            "\n$LINE_COMMENT This concludes the part of the basic user setup, you could add or exclude something here and there, but this procedure shows how it can work."
+            "$LINE_COMMENT For more user editing options, use the wildcard in this snippet -> user_mgmt"
+            "$LINE_COMMENT The next part deals with advanced settings, creating draids, pools and so on."
+        ],
+    }
+    "ibm_helper_setup_encryption_configuration": {
+        "prefix": ["ibm_usefull_thing, setup_encryption_configuration"],
+        "body": [
+            "$LINE_COMMENT ATTENTION this is one way to setup up a new encryption configuration for storage/ svc device. There are certainly other ways you can use, it just depends as always on your own skill."
+            "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
+            "$LINE_COMMENT If you have not yet performed the basic setup and are facing a new machine, use the prefix: setup_basic_system_configuration to complete the basic setup."
+            "\n$LINE_COMMENT This part is about how to set up encryption for your system as an example."
+            "$LINE_COMMENT It is assumed that there is either a license key or license file and the activation on the IBM side is completed."
+            "$LINE_COMMENT Connect to the ClusterIP and activate the feature by key"
+            "ssh superuser@${1:clusterip} svctask activatefeature -licensekey 1234-ABCD-DCBA-4321"
+            "$LINE_COMMENT or Keyfile"
+            "ssh superuser@${1:clusterip} svctask activatefeature -licensekeyfile ${1:filepath}"
+            "\n$LINE_COMMENT For the simplicity we use the usb stick, in one of the next versions I will add the Keyserver part. At least you need 3 usb flash drives!"
+            "$LINE_COMMENT Enable the USB"
+            "ssh superuser@${1:clusterip} svctask chencryption -usb enable"
+            "\n$LINE_COMMENT Prepare generates new keys and sets up the system to change encryption keys during apply"
+            "ssh superuser@${1:clusterip} svctask chencryption -key prepare -usb newkey"
+            "\n$LINE_COMMENT Commit includes applying new keys (and copying key material in this case to usb)"
+            "ssh superuser@${1:clusterip} svctask chencryption -key commit -usb newkey"
+            "\n$LINE_COMMENT Once this process is complete, you can create an encrypted draid and/or pool."
+            "$LINE_COMMENT First we create an encrypted pool with some additional default values"
+            "ssh superuser@${1:clusterip} svctask mkmdiskgrp -name ${2:pool_name} -unit ${3|b,kb,mb,gb,tb,pb|} -encrypt yes -ext ${4|1024,2048,4096,8192|} -warning ${5:disk_size_percentage}%"
+            "\n$LINE_COMMENT Next, we create an encrypted array (draid6). Attention: The encryption cannot be added to the array afterwards, in this case a new one would have to be created!"
+            "$LINE_COMMENT Get the driveclass that you want to use by unsing"
+            "ssh superuser@${1:clusterip} lsdriveclass"
+            "ssh superuser@${1:clusterip} svctask mkdistributedarray -level ${6|raid6,raid5,raid1|} -driveclass ${7:drive_class_id} -drivecount ${8:2-128} -name ${9:draid_name} -encrypt yes ${9:pool_mdiskgrp_id_or_name}"
+            "\n$LINE_COMMENT If you want to check if your pool and/or draid/arry is encrypted you can use the following command."
+            "ssh superuser@${1:clusterip} lsmdiskgrp 0 |grep encrypt"
+            "ssh superuser@${1:clusterip} lsarray 0 |grep encrypt"
+            "\n$LINE_COMMENT This concludes the part of the encryption setup, you could add or exclude something here and there, but this procedure shows how it can work."
+            "$LINE_COMMENT The next part deals with advanced settings and so on."
+        ],
+    }
+}
+
