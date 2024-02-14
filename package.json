@@ -1,0 +1,49 @@
+{
+  "name": "ibm-storage-cli-support",
+  "displayName": "IBM Storage CLI Support",
+  "description": "IBM Storage CLI Support for VSCode",
+  "version": "0.0.1",
+  "preview": false,
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "author": "Doc911",
+  "publisher": "ToolDoc",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "icon": "ibm_storage.png",
+  "categories": [
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "ibm",
+    "storage",
+    "spectrum",
+    "virtualize",
+    "powershell"
+  ],
+  "galleryBanner": {
+    "color": "#1763FE",
+    "theme": "light"
+  },
+  "homepage": "https://github.com/DocCLF/IBM-Storage-CLI-Support",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DocCLF/IBM-Storage-CLI-Support.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DocCLF/IBM-Storage-CLI-Support/issues"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": "",
+        "path": "./snippets/snippets.code-snippets"
+      },
+      {
+        "language": "powershell",
+        "path": "./snippets/snippets.code-snippets"
+      }
+    ]
+  }
+}
