@@ -14,7 +14,6 @@ If you miss something please feel free and contact me.
 | ibm_usefull_thing         | firmware_install_cli                 | A step by step guide on how to update the firmware via CLI                 |
 | ibm_usefull_thing         | drivefirmware_install_cli            | A step by step guide on how to update the drive firmware via CLI           |
 | ibm_usefull_thing         | backup_system_configuration_cli      | One way to Backing up the system configuration                             |
-| ibm_usefull_thing         | setup_basic_system_configuration     | One way to setup up a new system configuration for IBM Storage             |
 | ibm_usefull_thing         | setup_user_configuration             | One way to setup or modify up a new user on IBM Storage                    |
 | ibm_usefull_thing         | setup_basic_system_configuration     | One way to setup up a new system configuration for IBM Storage             |
 | ibm_usefull_thing         | setup_encryption_configuration       | One way to setup up a new encryption configuration for storage             |
