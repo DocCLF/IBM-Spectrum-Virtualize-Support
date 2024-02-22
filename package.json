@@ -2,7 +2,7 @@
   "name": "ibm-storage-cli-support",
   "displayName": "IBM Storage CLI Support",
   "description": "IBM Storage CLI Support for VSCode",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "preview": false,
   "engines": {
     "vscode": "^1.86.0"
@@ -10,7 +10,7 @@
   "author": "Doc911",
   "publisher": "ToolDoc",
   "license": "SEE LICENSE IN LICENSE.txt",
-  "icon": "ibm_storage.png",
+  "icon": "ibm_storage_v02.png",
   "categories": [
     "Snippets",
     "Other"
@@ -38,10 +38,6 @@
     "snippets": [
       {
         "language": "",
-        "path": "./snippets/snippets.code-snippets"
-      },
-      {
-        "language": "powershell",
         "path": "./snippets/snippets.code-snippets"
       }
     ]

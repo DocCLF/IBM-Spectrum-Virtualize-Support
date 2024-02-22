@@ -3,6 +3,8 @@
 IBM Storage CLI Support contains what I consider to be the most important CLI commands for dealing with IBM Storage. 
 I created the collection to make my life easier when creating scripts with [PowerShell][] for [Visual Studio Code][].
 I currently use [PowerShell][] Version 7.4.x for this purpose.
+The easiest and better way is to download the extensions directly in the VS code under Extensions, 
+as this is the quickest way to get the latest version without having to do anything.
 
 All commands that you find here correspond to the commands that you find in the IBM documentation here e.g. for the [IBM SAN Volume Controller][]. 
 Not all options for all commands are available here, but the most common ones should be available, at least the ones I deal with most of the time.
@@ -14,6 +16,7 @@ If you miss something please feel free and contact me.
 | ibm_usefull_thing         | firmware_install_cli                 | A step by step guide on how to update the firmware via CLI                 |
 | ibm_usefull_thing         | drivefirmware_install_cli            | A step by step guide on how to update the drive firmware via CLI           |
 | ibm_usefull_thing         | backup_system_configuration_cli      | One way to Backing up the system configuration                             |
+| ibm_usefull_thing         | setup_basic_system_configuration     | One way to setup up a new system configuration for IBM Storage             |
 | ibm_usefull_thing         | setup_user_configuration             | One way to setup or modify up a new user on IBM Storage                    |
 | ibm_usefull_thing         | setup_basic_system_configuration     | One way to setup up a new system configuration for IBM Storage             |
 | ibm_usefull_thing         | setup_encryption_configuration       | One way to setup up a new encryption configuration for storage             |
@@ -74,12 +77,13 @@ It also works in combination with my [FabricOS-Support][] Snippet
 * Some tab stops do not work as desired
 * Some explanations are not clear enough
 
+
 ## Release Notes
 
 See [changelog](CHANGELOG.md) for all changes and releases.
 
 ## Important for use
-If you are not sure about the effects of individual commands, please read the official [IBM documentation] for your product before using it. 
+If you are not sure about the effects of individual commands, please read the official [IBM documentation][] for your product before using it. 
 I will not accept any liability for damage or loss of data.
 
 

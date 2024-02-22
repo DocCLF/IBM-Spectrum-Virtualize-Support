@@ -1865,7 +1865,7 @@
         ],
         "description": " Change the attributes of the current user.\n Example: chuser -password passyw 0\n There are a lot more parameters, but these are optional."
     }
-    "ibm_user_mgmt_ch_user":{
+    "ibm_user_mgmt_ch_usergrp":{
         "prefix":["ibm_user_mgmt, chusergrp"],
         "body":[
             "chusergrp -remote ${1|no,yes|} -passwordkeyrequired ${2|no,yes|} -disablegui ${3|no,yes|} -disablecli ${4|no,yes|} -disablerest ${5|no,yes|} ${6:grp_name_or_id}"
@@ -2402,6 +2402,8 @@
             "$LINE_COMMENT First stepp is backup your Systems"
             "$LINE_COMMENT ATTENTION: you do not necessarily need the superuser ,a user with normal admin privileges is sufficient"
             "ssh ${1:authorized_user}@${2:ipaddress} svcconfig backup"
+            "$LINE_COMMENT If ssh is not available you can also use plink as follows. This means wherever you see ssh you use plink. The same applies to scp and pscp, the executions are actually the same."
+            "$LINE_COMMENT It would also work differently but this is the easier way."
             "\n$LINE_COMMENT Download the files to your System"
             "pscp -unsafe ${1:authorized_user}@${2:ipaddress}:/dumps/svc.config.backup.* %USERPROFILE%\\Documents\\"
             "\n$LINE_COMMENT Download the required software from IBM's Fix Central page by using the system type/model number and check with the help of the ibm firmware matrix if you can use it."
@@ -2438,6 +2440,8 @@
             "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
             "$LINE_COMMENT First stepp is backup your Systems"
             "$LINE_COMMENT ATTENTION: you do not necessarily need the superuser ,a user with normal admin privileges is sufficient"
+            "$LINE_COMMENT If ssh is not available you can also use plink as follows. This means wherever you see ssh you use plink. The same applies to scp and pscp, the executions are actually the same."
+            "$LINE_COMMENT It would also work differently but this is the easier way."
             "ssh ${1:authorized_user}@${2:ipaddress} svcconfig backup"
             "\n$LINE_COMMENT Download the files to your System"
             "pscp -unsafe ${1:authorized_user}@${2:ipaddress}:/dumps/svc.config.backup.* ."
@@ -2476,9 +2480,11 @@
             "$LINE_COMMENT ATTENTION this is one way to Backing up the system configuration, there are certainly other ways you can use, it just depends as always on your own skill."
             "$LINE_COMMENT I usually use the PowerShell_7.x in vs-code for this, as far as possible and reasonable."
             "$LINE_COMMENT ATTENTION: you do not necessarily need the superuser ,a user with normal admin privileges is sufficient"
+            "$LINE_COMMENT If ssh is not available you can also use plink as follows. This means wherever you see ssh you use plink. The same applies to scp and pscp, the executions are actually the same."
+            "$LINE_COMMENT It would also work differently but this is the easier way."
             "ssh ${1:authorized_user}@${2:ipaddress} svcconfig backup"
             "\n$LINE_COMMENT Download the files to your System, you can of course customize the path for your system"
-            "pscp -unsafe ${1:authorized_user}@${2:ipaddress}:/dumps/svc.config.backup.* %USERPROFILE%\\Documents\\"
+            "pscp -unsafe ${1:authorized_user}@${2:ipaddress}:/dumps/svc.config.backup.* ."
             "\n$LINE_COMMENT done"
         ],
         "description": " This is an exemplary default basic procedure for backup system configuration via cli."
@@ -2492,6 +2498,8 @@
             "$LINE_COMMENT The easiest way to initialize the system is via the WebGui, connect via the technician port to 192.168.0.1 and assign the ClusterIP in the wizard."
             "$LINE_COMMENT Then plug the network cable into port 1 and wait for the cluster IP to come online, you can then do the rest via cli as described here."
             "$LINE_COMMENT The other Way, access the command line by using the superuser credentials via technician port, Enter the following CLI command to create the system"
+            "$LINE_COMMENT If ssh is not available you can also use plink as follows. This means wherever you see ssh you use plink. The same applies to scp and pscp, the executions are actually the same."
+            "$LINE_COMMENT It would also work differently but this is the easier way."
             "$LINE_COMMENT Setup the ClusterIP"
             "ssh superuser@192.168.0.1 svctask mkcluster -clusterip ${1:clusterip} -gw ${2:gw_ip} -mask ${2:subnetmask} -port 1"
             "\n$LINE_COMMENT We use the superuser until the final completion of the setup with a simple password to make our work as easy as possible."
@@ -2541,6 +2549,8 @@
             "$LINE_COMMENT At the end, the final users are created with their final passwords and security settings."
             "\n$LINE_COMMENT Connect to the ClusterIP and create some useful user"
             "$LINE_COMMENT In the first step, configure the password policy to be used globally by the system. Here in two steps for a better overview not all steps have to be used but it is recommended."
+            "$LINE_COMMENT If ssh is not available you can also use plink as follows. This means wherever you see ssh you use plink. The same applies to scp and pscp, the executions are actually the same."
+            "$LINE_COMMENT It would also work differently but this is the easier way."
             "ssh superuser@${1:clusterip} chsecurity -minpasswordlength ${1:6-64} -checkpasswordhistory ${2|yes,no|} -expirywarning ${3:0-30} -maxpasswordhistory ${4:0-365} -passwordexpiry ${5:0-365} -passworddigits ${6:0-3} -passwordlowercase ${7:0-3} -passwordspecialchars ${8:0-3} -passworduppercase ${9:0-3}"
             "ssh superuser@${1:clusterip} chsecurity -clitimeout ${10:5-240} -guitimeout ${11:5-240} -maxfailedlogins ${12:0-10} -lockoutperiod ${13:10-120} -resetpolicy ${14|yes,no|} -restapitimeout ${15:10-120} -sslprotocol ${16:2-7} -sshprotocol ${17:1-3}"
             "\n$LINE_COMMENT Create a monitoring user for storage insights or other monitoring tools, Usergroup 4 is the \"Monitor\" Grp."
@@ -2567,6 +2577,8 @@
             "$LINE_COMMENT If you have not yet performed the basic setup and are facing a new machine, use the prefix: setup_basic_system_configuration to complete the basic setup."
             "\n$LINE_COMMENT This part is about how to set up encryption for your system as an example."
             "$LINE_COMMENT It is assumed that there is either a license key or license file and the activation on the IBM side is completed."
+            "$LINE_COMMENT If ssh is not available you can also use plink as follows. This means wherever you see ssh you use plink. The same applies to scp and pscp, the executions are actually the same."
+            "$LINE_COMMENT It would also work differently but this is the easier way."
             "$LINE_COMMENT Connect to the ClusterIP and activate the feature by key"
             "ssh superuser@${1:clusterip} svctask activatefeature -licensekey 1234-ABCD-DCBA-4321"
             "$LINE_COMMENT or Keyfile"
